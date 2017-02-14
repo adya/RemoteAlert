@@ -1,0 +1,501 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		000194D81E527C37008600AC /* TSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000194D61E527C37008600AC /* TSTextField.swift */; };
+		000194D91E527C38008600AC /* TSViewEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000194D71E527C37008600AC /* TSViewEx.swift */; };
+		003E26C41E52539500864E0A /* Alert.wav in Resources */ = {isa = PBXBuildFile; fileRef = 003E26C31E52539500864E0A /* Alert.wav */; };
+		00D4469C1E4F6C030036635F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4469B1E4F6C030036635F /* AppDelegate.swift */; };
+		00D4469E1E4F6C030036635F /* AlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4469D1E4F6C030036635F /* AlertsViewController.swift */; };
+		00D446A11E4F6C030036635F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00D4469F1E4F6C030036635F /* Main.storyboard */; };
+		00D446A31E4F6C030036635F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00D446A21E4F6C030036635F /* Assets.xcassets */; };
+		00D446A61E4F6C030036635F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00D446A41E4F6C030036635F /* LaunchScreen.storyboard */; };
+		00D446AF1E4F6C6A0036635F /* AddAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D446AD1E4F6C6A0036635F /* AddAlertViewController.swift */; };
+		00D446B21E4F755C0036635F /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D446B11E4F755C0036635F /* Alert.swift */; };
+		00D446B41E4F76230036635F /* AlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D446B31E4F76230036635F /* AlertViewModel.swift */; };
+		00D446DF1E4F82760036635F /* AlertCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D446DE1E4F82760036635F /* AlertCell.swift */; };
+		00D446E11E4F8AED0036635F /* AddAlertViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 00D446E01E4F8AED0036635F /* AddAlertViewController.xib */; };
+		00D446E31E4F8C900036635F /* StandaloneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D446E21E4F8C900036635F /* StandaloneViewController.swift */; };
+		00D446E61E4F8FFB0036635F /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D446E51E4F8FFB0036635F /* AlertManager.swift */; };
+		00D446F71E4F939A0036635F /* TSUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D446F61E4F939A0036635F /* TSUtils.swift */; };
+		00D446FB1E4F953D0036635F /* TSNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 00D446FA1E4F953D0036635F /* TSNotificationManager.m */; };
+		00D4470A1E50D19F0036635F /* TSArchitectureBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447071E50D19F0036635F /* TSArchitectureBase.swift */; };
+		00D4470B1E50D19F0036635F /* TSCollectionsViewEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447081E50D19F0036635F /* TSCollectionsViewEx.swift */; };
+		00D4470C1E50D19F0036635F /* TSRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447091E50D19F0036635F /* TSRegex.swift */; };
+		00D447211E50D1DC0036635F /* ClosureValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447101E50D1DC0036635F /* ClosureValidator.swift */; };
+		00D447221E50D1DC0036635F /* CompoundValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447111E50D1DC0036635F /* CompoundValidator.swift */; };
+		00D447231E50D1DC0036635F /* Countable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447121E50D1DC0036635F /* Countable.swift */; };
+		00D447241E50D1DC0036635F /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447131E50D1DC0036635F /* EmailValidator.swift */; };
+		00D447251E50D1DC0036635F /* InvertedValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447141E50D1DC0036635F /* InvertedValidator.swift */; };
+		00D447261E50D1DC0036635F /* LengthValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447151E50D1DC0036635F /* LengthValidator.swift */; };
+		00D447271E50D1DC0036635F /* LettersValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447161E50D1DC0036635F /* LettersValidator.swift */; };
+		00D447281E50D1DC0036635F /* NilValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447171E50D1DC0036635F /* NilValidator.swift */; };
+		00D447291E50D1DC0036635F /* NonEmptyValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447181E50D1DC0036635F /* NonEmptyValidator.swift */; };
+		00D4472A1E50D1DC0036635F /* NumbersValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447191E50D1DC0036635F /* NumbersValidator.swift */; };
+		00D4472B1E50D1DC0036635F /* PatternValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4471A1E50D1DC0036635F /* PatternValidator.swift */; };
+		00D4472C1E50D1DC0036635F /* Textual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4471B1E50D1DC0036635F /* Textual.swift */; };
+		00D4472D1E50D1DC0036635F /* UrlValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4471C1E50D1DC0036635F /* UrlValidator.swift */; };
+		00D4472E1E50D1DC0036635F /* ValidatableProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4471D1E50D1DC0036635F /* ValidatableProperty.swift */; };
+		00D4472F1E50D1DC0036635F /* ValidatableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4471E1E50D1DC0036635F /* ValidatableViewModel.swift */; };
+		00D447301E50D1DC0036635F /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4471F1E50D1DC0036635F /* Validator.swift */; };
+		00D447311E50D1DC0036635F /* ValueValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447201E50D1DC0036635F /* ValueValidator.swift */; };
+		00D4473A1E50D24F0036635F /* DictionaryStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447341E50D24F0036635F /* DictionaryStorageProvider.swift */; };
+		00D4473B1E50D24F0036635F /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447351E50D24F0036635F /* Storage.swift */; };
+		00D4473C1E50D24F0036635F /* StorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447361E50D24F0036635F /* StorageProvider.swift */; };
+		00D4473D1E50D24F0036635F /* UbiquitousStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447371E50D24F0036635F /* UbiquitousStorageProvider.swift */; };
+		00D4473E1E50D24F0036635F /* UserDefaultsStorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447381E50D24F0036635F /* UserDefaultsStorageProvider.swift */; };
+		00D447401E50D2540036635F /* Archivable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4473F1E50D2540036635F /* Archivable.swift */; };
+		00D447421E513C0C0036635F /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447411E513C0C0036635F /* Utils.swift */; };
+		00D447441E51C7AB0036635F /* AlertNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D447431E51C7AB0036635F /* AlertNotifier.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		000194D61E527C37008600AC /* TSTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSTextField.swift; sourceTree = "<group>"; };
+		000194D71E527C37008600AC /* TSViewEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSViewEx.swift; sourceTree = "<group>"; };
+		003E26C31E52539500864E0A /* Alert.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Alert.wav; sourceTree = "<group>"; };
+		00D446981E4F6C030036635F /* Remote Alert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Remote Alert.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00D4469B1E4F6C030036635F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		00D4469D1E4F6C030036635F /* AlertsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewController.swift; sourceTree = "<group>"; };
+		00D446A01E4F6C030036635F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		00D446A21E4F6C030036635F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		00D446A51E4F6C030036635F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		00D446A71E4F6C030036635F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		00D446AD1E4F6C6A0036635F /* AddAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddAlertViewController.swift; sourceTree = "<group>"; };
+		00D446B11E4F755C0036635F /* Alert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
+		00D446B31E4F76230036635F /* AlertViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertViewModel.swift; sourceTree = "<group>"; };
+		00D446DE1E4F82760036635F /* AlertCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertCell.swift; sourceTree = "<group>"; };
+		00D446E01E4F8AED0036635F /* AddAlertViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddAlertViewController.xib; sourceTree = "<group>"; };
+		00D446E21E4F8C900036635F /* StandaloneViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = StandaloneViewController.swift; path = ../StandaloneViewController.swift; sourceTree = "<group>"; };
+		00D446E51E4F8FFB0036635F /* AlertManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
+		00D446F61E4F939A0036635F /* TSUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSUtils.swift; sourceTree = "<group>"; };
+		00D446F81E4F953C0036635F /* Remote Alert-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Remote Alert-Bridging-Header.h"; sourceTree = "<group>"; };
+		00D446F91E4F953D0036635F /* TSNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TSNotificationManager.h; sourceTree = "<group>"; };
+		00D446FA1E4F953D0036635F /* TSNotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TSNotificationManager.m; sourceTree = "<group>"; };
+		00D447071E50D19F0036635F /* TSArchitectureBase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSArchitectureBase.swift; sourceTree = "<group>"; };
+		00D447081E50D19F0036635F /* TSCollectionsViewEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSCollectionsViewEx.swift; sourceTree = "<group>"; };
+		00D447091E50D19F0036635F /* TSRegex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSRegex.swift; sourceTree = "<group>"; };
+		00D447101E50D1DC0036635F /* ClosureValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosureValidator.swift; sourceTree = "<group>"; };
+		00D447111E50D1DC0036635F /* CompoundValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompoundValidator.swift; sourceTree = "<group>"; };
+		00D447121E50D1DC0036635F /* Countable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Countable.swift; sourceTree = "<group>"; };
+		00D447131E50D1DC0036635F /* EmailValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailValidator.swift; sourceTree = "<group>"; };
+		00D447141E50D1DC0036635F /* InvertedValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InvertedValidator.swift; sourceTree = "<group>"; };
+		00D447151E50D1DC0036635F /* LengthValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LengthValidator.swift; sourceTree = "<group>"; };
+		00D447161E50D1DC0036635F /* LettersValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LettersValidator.swift; sourceTree = "<group>"; };
+		00D447171E50D1DC0036635F /* NilValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NilValidator.swift; sourceTree = "<group>"; };
+		00D447181E50D1DC0036635F /* NonEmptyValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonEmptyValidator.swift; sourceTree = "<group>"; };
+		00D447191E50D1DC0036635F /* NumbersValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumbersValidator.swift; sourceTree = "<group>"; };
+		00D4471A1E50D1DC0036635F /* PatternValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PatternValidator.swift; sourceTree = "<group>"; };
+		00D4471B1E50D1DC0036635F /* Textual.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Textual.swift; sourceTree = "<group>"; };
+		00D4471C1E50D1DC0036635F /* UrlValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UrlValidator.swift; sourceTree = "<group>"; };
+		00D4471D1E50D1DC0036635F /* ValidatableProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidatableProperty.swift; sourceTree = "<group>"; };
+		00D4471E1E50D1DC0036635F /* ValidatableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValidatableViewModel.swift; sourceTree = "<group>"; };
+		00D4471F1E50D1DC0036635F /* Validator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
+		00D447201E50D1DC0036635F /* ValueValidator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueValidator.swift; sourceTree = "<group>"; };
+		00D447341E50D24F0036635F /* DictionaryStorageProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryStorageProvider.swift; sourceTree = "<group>"; };
+		00D447351E50D24F0036635F /* Storage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		00D447361E50D24F0036635F /* StorageProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StorageProvider.swift; sourceTree = "<group>"; };
+		00D447371E50D24F0036635F /* UbiquitousStorageProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UbiquitousStorageProvider.swift; sourceTree = "<group>"; };
+		00D447381E50D24F0036635F /* UserDefaultsStorageProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsStorageProvider.swift; sourceTree = "<group>"; };
+		00D4473F1E50D2540036635F /* Archivable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Archivable.swift; sourceTree = "<group>"; };
+		00D447411E513C0C0036635F /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		00D447431E51C7AB0036635F /* AlertNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertNotifier.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		00D446951E4F6C030036635F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00D4468F1E4F6C030036635F = {
+			isa = PBXGroup;
+			children = (
+				00D4469A1E4F6C030036635F /* Remote Alert */,
+				00D446991E4F6C030036635F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		00D446991E4F6C030036635F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				00D446981E4F6C030036635F /* Remote Alert.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		00D4469A1E4F6C030036635F /* Remote Alert */ = {
+			isa = PBXGroup;
+			children = (
+				00D446E41E4F8CB30036635F /* TSKit */,
+				00D4469B1E4F6C030036635F /* AppDelegate.swift */,
+				00D4469F1E4F6C030036635F /* Main.storyboard */,
+				00D4469D1E4F6C030036635F /* AlertsViewController.swift */,
+				00D446AD1E4F6C6A0036635F /* AddAlertViewController.swift */,
+				00D446E01E4F8AED0036635F /* AddAlertViewController.xib */,
+				00D446DE1E4F82760036635F /* AlertCell.swift */,
+				00D446B11E4F755C0036635F /* Alert.swift */,
+				00D446B31E4F76230036635F /* AlertViewModel.swift */,
+				00D446E51E4F8FFB0036635F /* AlertManager.swift */,
+				00D447431E51C7AB0036635F /* AlertNotifier.swift */,
+				00D446A21E4F6C030036635F /* Assets.xcassets */,
+				00D446A41E4F6C030036635F /* LaunchScreen.storyboard */,
+				00D446A71E4F6C030036635F /* Info.plist */,
+				00D447411E513C0C0036635F /* Utils.swift */,
+				003E26C31E52539500864E0A /* Alert.wav */,
+			);
+			path = "Remote Alert";
+			sourceTree = "<group>";
+		};
+		00D446E41E4F8CB30036635F /* TSKit */ = {
+			isa = PBXGroup;
+			children = (
+				000194D61E527C37008600AC /* TSTextField.swift */,
+				000194D71E527C37008600AC /* TSViewEx.swift */,
+				00D4470F1E50D1DC0036635F /* TSValidation */,
+				00D447071E50D19F0036635F /* TSArchitectureBase.swift */,
+				00D447321E50D24F0036635F /* TSStorage */,
+				00D447081E50D19F0036635F /* TSCollectionsViewEx.swift */,
+				00D447091E50D19F0036635F /* TSRegex.swift */,
+				00D446F91E4F953D0036635F /* TSNotificationManager.h */,
+				00D446FA1E4F953D0036635F /* TSNotificationManager.m */,
+				00D446F61E4F939A0036635F /* TSUtils.swift */,
+				00D446E21E4F8C900036635F /* StandaloneViewController.swift */,
+				00D446F81E4F953C0036635F /* Remote Alert-Bridging-Header.h */,
+			);
+			path = TSKit;
+			sourceTree = "<group>";
+		};
+		00D4470F1E50D1DC0036635F /* TSValidation */ = {
+			isa = PBXGroup;
+			children = (
+				00D447101E50D1DC0036635F /* ClosureValidator.swift */,
+				00D447111E50D1DC0036635F /* CompoundValidator.swift */,
+				00D447121E50D1DC0036635F /* Countable.swift */,
+				00D447131E50D1DC0036635F /* EmailValidator.swift */,
+				00D447141E50D1DC0036635F /* InvertedValidator.swift */,
+				00D447151E50D1DC0036635F /* LengthValidator.swift */,
+				00D447161E50D1DC0036635F /* LettersValidator.swift */,
+				00D447171E50D1DC0036635F /* NilValidator.swift */,
+				00D447181E50D1DC0036635F /* NonEmptyValidator.swift */,
+				00D447191E50D1DC0036635F /* NumbersValidator.swift */,
+				00D4471A1E50D1DC0036635F /* PatternValidator.swift */,
+				00D4471B1E50D1DC0036635F /* Textual.swift */,
+				00D4471C1E50D1DC0036635F /* UrlValidator.swift */,
+				00D4471D1E50D1DC0036635F /* ValidatableProperty.swift */,
+				00D4471E1E50D1DC0036635F /* ValidatableViewModel.swift */,
+				00D4471F1E50D1DC0036635F /* Validator.swift */,
+				00D447201E50D1DC0036635F /* ValueValidator.swift */,
+			);
+			path = TSValidation;
+			sourceTree = "<group>";
+		};
+		00D447321E50D24F0036635F /* TSStorage */ = {
+			isa = PBXGroup;
+			children = (
+				00D4473F1E50D2540036635F /* Archivable.swift */,
+				00D447341E50D24F0036635F /* DictionaryStorageProvider.swift */,
+				00D447351E50D24F0036635F /* Storage.swift */,
+				00D447361E50D24F0036635F /* StorageProvider.swift */,
+				00D447371E50D24F0036635F /* UbiquitousStorageProvider.swift */,
+				00D447381E50D24F0036635F /* UserDefaultsStorageProvider.swift */,
+			);
+			path = TSStorage;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		00D446971E4F6C030036635F /* Remote Alert */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 00D446AA1E4F6C030036635F /* Build configuration list for PBXNativeTarget "Remote Alert" */;
+			buildPhases = (
+				00D446941E4F6C030036635F /* Sources */,
+				00D446951E4F6C030036635F /* Frameworks */,
+				00D446961E4F6C030036635F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Remote Alert";
+			productName = "Remote Alert";
+			productReference = 00D446981E4F6C030036635F /* Remote Alert.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		00D446901E4F6C030036635F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = adya;
+				TargetAttributes = {
+					00D446971E4F6C030036635F = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = V3DD8M3EUV;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 00D446931E4F6C030036635F /* Build configuration list for PBXProject "Remote Alert" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 00D4468F1E4F6C030036635F;
+			productRefGroup = 00D446991E4F6C030036635F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				00D446971E4F6C030036635F /* Remote Alert */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		00D446961E4F6C030036635F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00D446A61E4F6C030036635F /* LaunchScreen.storyboard in Resources */,
+				00D446A31E4F6C030036635F /* Assets.xcassets in Resources */,
+				00D446A11E4F6C030036635F /* Main.storyboard in Resources */,
+				00D446E11E4F8AED0036635F /* AddAlertViewController.xib in Resources */,
+				003E26C41E52539500864E0A /* Alert.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		00D446941E4F6C030036635F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				00D447281E50D1DC0036635F /* NilValidator.swift in Sources */,
+				00D447401E50D2540036635F /* Archivable.swift in Sources */,
+				000194D81E527C37008600AC /* TSTextField.swift in Sources */,
+				00D4470C1E50D19F0036635F /* TSRegex.swift in Sources */,
+				00D4473C1E50D24F0036635F /* StorageProvider.swift in Sources */,
+				00D447271E50D1DC0036635F /* LettersValidator.swift in Sources */,
+				00D446E31E4F8C900036635F /* StandaloneViewController.swift in Sources */,
+				00D4472A1E50D1DC0036635F /* NumbersValidator.swift in Sources */,
+				00D4472D1E50D1DC0036635F /* UrlValidator.swift in Sources */,
+				00D446DF1E4F82760036635F /* AlertCell.swift in Sources */,
+				00D447211E50D1DC0036635F /* ClosureValidator.swift in Sources */,
+				00D4472F1E50D1DC0036635F /* ValidatableViewModel.swift in Sources */,
+				00D4472E1E50D1DC0036635F /* ValidatableProperty.swift in Sources */,
+				00D446F71E4F939A0036635F /* TSUtils.swift in Sources */,
+				00D447421E513C0C0036635F /* Utils.swift in Sources */,
+				00D447251E50D1DC0036635F /* InvertedValidator.swift in Sources */,
+				00D447261E50D1DC0036635F /* LengthValidator.swift in Sources */,
+				00D4469E1E4F6C030036635F /* AlertsViewController.swift in Sources */,
+				00D4473D1E50D24F0036635F /* UbiquitousStorageProvider.swift in Sources */,
+				00D4470A1E50D19F0036635F /* TSArchitectureBase.swift in Sources */,
+				00D4473A1E50D24F0036635F /* DictionaryStorageProvider.swift in Sources */,
+				00D446FB1E4F953D0036635F /* TSNotificationManager.m in Sources */,
+				00D446E61E4F8FFB0036635F /* AlertManager.swift in Sources */,
+				00D4469C1E4F6C030036635F /* AppDelegate.swift in Sources */,
+				00D447291E50D1DC0036635F /* NonEmptyValidator.swift in Sources */,
+				00D446B21E4F755C0036635F /* Alert.swift in Sources */,
+				00D4472B1E50D1DC0036635F /* PatternValidator.swift in Sources */,
+				00D4473B1E50D24F0036635F /* Storage.swift in Sources */,
+				00D447231E50D1DC0036635F /* Countable.swift in Sources */,
+				00D447311E50D1DC0036635F /* ValueValidator.swift in Sources */,
+				00D447241E50D1DC0036635F /* EmailValidator.swift in Sources */,
+				00D447441E51C7AB0036635F /* AlertNotifier.swift in Sources */,
+				000194D91E527C38008600AC /* TSViewEx.swift in Sources */,
+				00D4472C1E50D1DC0036635F /* Textual.swift in Sources */,
+				00D447221E50D1DC0036635F /* CompoundValidator.swift in Sources */,
+				00D446B41E4F76230036635F /* AlertViewModel.swift in Sources */,
+				00D4470B1E50D19F0036635F /* TSCollectionsViewEx.swift in Sources */,
+				00D4473E1E50D24F0036635F /* UserDefaultsStorageProvider.swift in Sources */,
+				00D447301E50D1DC0036635F /* Validator.swift in Sources */,
+				00D446AF1E4F6C6A0036635F /* AddAlertViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		00D4469F1E4F6C030036635F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				00D446A01E4F6C030036635F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		00D446A41E4F6C030036635F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				00D446A51E4F6C030036635F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		00D446A81E4F6C030036635F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		00D446A91E4F6C030036635F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		00D446AB1E4F6C030036635F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Remote Alert/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adya.remotealert;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Remote Alert/TSKit/Remote Alert-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		00D446AC1E4F6C030036635F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				INFOPLIST_FILE = "Remote Alert/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.adya.remotealert;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Remote Alert/TSKit/Remote Alert-Bridging-Header.h";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		00D446931E4F6C030036635F /* Build configuration list for PBXProject "Remote Alert" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00D446A81E4F6C030036635F /* Debug */,
+				00D446A91E4F6C030036635F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		00D446AA1E4F6C030036635F /* Build configuration list for PBXNativeTarget "Remote Alert" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				00D446AB1E4F6C030036635F /* Debug */,
+				00D446AC1E4F6C030036635F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 00D446901E4F6C030036635F /* Project object */;
+}
