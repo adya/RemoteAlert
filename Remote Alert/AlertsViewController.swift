@@ -61,8 +61,9 @@ class AlertsViewController: UIViewController, UIPopoverPresentationControllerDel
     func alertEditor(editor: AlertEditor, didAdd alertViewModel: AlertViewModel) {
         
         if let alert = alertViewModel.alert where alertViewModel.isValid {
+            let isFirst = !hasAlerts
             viewModel?.append(EditableAlertViewModel(alert: alert))
-            if !hasAlerts {
+            if isFirst {
                 tvAlerts.reloadData()
             } else {
                 tvAlerts.insertRowsAtIndexPaths([NSIndexPath(forRow: viewModel.count - 1, inSection: 0)], withRowAnimation: .Automatic)
