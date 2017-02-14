@@ -41,7 +41,7 @@ struct NewAlertViewModel : AlertViewModel {
     var statusColor: UIColor?
     
     init(alert : Alert? = nil) {
-        urlProperty = ValidatableProperty(value: alert?.url, validators: [NilValidator(), UrlValidator()])
+        urlProperty = ValidatableProperty(value: alert?.url, validators: [NilValidator(), LengthValidator(minLength: 3)])
         intervalProperty = ValidatableProperty(value: alert?.interval, validators: [NilValidator(), ValueValidator(minValue: 1)])
         enabled = alert?.enabled ?? true
         active = false
@@ -95,7 +95,7 @@ struct EditableAlertViewModel : AlertViewModel {
     
     init(alert : Alert) {
         self.alert = alert
-        urlProperty = ValidatableProperty(value: alert.url, validators: [NilValidator(), UrlValidator()])
+        urlProperty = ValidatableProperty(value: alert.url, validators: [NilValidator(), LengthValidator(minLength: 3)])
         intervalProperty = ValidatableProperty(value: alert.interval, validators: [NilValidator(), ValueValidator(minValue: 1)])
         enabled = alert.enabled
         if case let .Scheduled(rem) = alert.state {
