@@ -26,12 +26,6 @@ class AlertsViewController: UIViewController, UIPopoverPresentationControllerDel
         tvAlerts.rowHeight = UITableViewAutomaticDimension
         manager.notifier = UIAlertNotifier(presentingViewController: self)
     }
-
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        // Refresh any background alerts
-        manager.notifier?.notifyAlertsTriggered(self.manager.triggeredAlerts)
-    }
     
     @IBAction func addAction(sender: UIButton) {
         showPopover(sender)
