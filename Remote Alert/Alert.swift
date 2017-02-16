@@ -1,4 +1,4 @@
-enum AlertState {
+enum AlertState : Archivable {
     
     /// Alerts hasn't been checked yet.
     case Unknown
@@ -23,6 +23,44 @@ enum AlertState {
     
     /// Alert has been checked and triggered.
     case Triggered
+    
+    func archived() -> [String : AnyObject] {
+        var archive : [String : AnyObject] = [Keys.kIdentifier.rawValue : identifier]
+        if case let .Scheduled(time) = self {
+            archive[Keys.kRemaining.rawValue] = time
+        }
+        return archive
+    }
+    
+    init?(fromArchive archive: [String : AnyObject]) {
+        guard let identifier = archive[Keys.kIdentifier.rawValue] as? String else {
+            return nil
+        }
+        
+        let states : [AlertState] = [.Unknown, .Invalid, .Broken, .Idle, .Fired, .Skipped, .Triggered]
+        guard let index = states.map({$0.identifier}).indexOf(identifier) else {
+            return nil
+        }
+        
+        if let remaining = archive[Keys.kRemaining.rawValue] as? Int {
+            self = .Scheduled(remaining)
+        } else {
+            self = states[index]
+        }
+        
+    }
+    
+    private var identifier : String {
+        switch self {
+        case .Scheduled: return "Scheduled"
+        default: return String(self)
+        }
+    }
+    
+    private enum Keys : String {
+        case kIdentifier = "kState"
+        case kRemaining = "kStateRemaining"
+    }
 }
 
 struct Alert : Hashable, CustomStringConvertible {
@@ -59,12 +97,14 @@ extension Alert : Archivable {
         case kInterval = "kAlertInterval"
         case kUrl = "kAlertUrl"
         case kEnabled = "kAlertEnabled"
+        case kState = "kAlertState"
     }
     
     func archived() -> [String : AnyObject] {
         return [Keys.kId.rawValue : id,
                 Keys.kInterval.rawValue : interval,
                 Keys.kUrl.rawValue : url,
+                Keys.kState.rawValue : state.archived(),
                 Keys.kEnabled.rawValue : enabled
         ]
     }
@@ -73,9 +113,10 @@ extension Alert : Archivable {
         guard let id = archive[Keys.kId.rawValue] as? Int,
             url = archive[Keys.kUrl.rawValue] as? String,
             interval = archive[Keys.kInterval.rawValue] as? Int,
+        state = (archive[Keys.kState.rawValue] as? [String : AnyObject]).flatMap({AlertState(fromArchive: $0)}),
             enabled = archive[Keys.kEnabled.rawValue] as? Bool else {
                 return nil
         }
-        self.init(id: id, url: url, interval: interval, enabled: enabled, state: .Unknown)
+        self.init(id: id, url: url, interval: interval, enabled: enabled, state: state)
     }
 }

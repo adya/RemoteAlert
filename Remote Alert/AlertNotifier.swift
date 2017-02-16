@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import AudioToolbox
 
 protocol AlertNotifier {
     func notifyAlertsTriggered(alert : [Alert])
@@ -8,39 +9,48 @@ protocol AlertNotifier {
 
 class AudioAlertNotifier : AlertNotifier {
     
-    private var player : AVAudioPlayer?
-    private let audio : NSURL?
+    private var playing : Bool = false
+    private let sound : SystemSoundID
     var background: Bool = false
     
     init() {
-        guard let path = NSBundle.mainBundle().pathForResource("Alert", ofType: "wav") else {
+        guard let url = NSBundle.mainBundle().URLForResource("Alert", withExtension: "wav") else {
             print("Failed to load audio file.")
-            audio = nil
+            self.sound = 0
             return
         }
-        audio = NSURL(fileURLWithPath: path)
-        player = nil
+        
+        
+        var sound : SystemSoundID = 0
+        AudioServicesCreateSystemSoundID(url, &sound)
+        self.sound = sound
+        
+        let data = unsafeBitCast(self, UnsafeMutablePointer<Void>.self)
+        AudioServicesAddSystemSoundCompletion(sound, nil, nil, { sound, data in
+            let me = unsafeBitCast(data, AudioAlertNotifier.self)
+            if me.playing {
+                AudioServicesPlaySystemSound(sound)
+            }
+        }, data)
     }
     
     private func play() {
-        player?.stop()
-        guard let audio = audio, player = try? AVAudioPlayer(contentsOfURL: audio) else {
-            return
-        }
-        self.player = player
-        self.player?.numberOfLoops = -1
-        self.player?.play()
+        playing = true
+        AudioServicesPlaySystemSound(sound)
     }
     
     private func stop() {
-        player?.stop()
-        player = nil
+        playing = false
     }
     
     func notifyAlertsTriggered(alerts: [Alert]) {
-        if !alerts.isEmpty && !(player?.playing ?? false) {
+        if !alerts.isEmpty && !playing {
             play()
         }
+    }
+    
+    deinit {
+        AudioServicesDisposeSystemSoundID(sound)
     }
 }
 

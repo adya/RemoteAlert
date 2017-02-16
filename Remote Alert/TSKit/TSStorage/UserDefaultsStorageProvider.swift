@@ -6,10 +6,8 @@ class UserDefaultsStorageProvider : StorageProvider {
         set {
             if newValue == nil {
                 storage.setObject(nil, forKey: key)
-                storage.synchronize()
             } else {
                 storage.setObject(newValue, forKey: key)
-                storage.synchronize()
             }
         }
         get {

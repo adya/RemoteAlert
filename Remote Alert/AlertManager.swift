@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import AVFoundation
 
 protocol AlertManagerDelegate {
@@ -11,8 +11,67 @@ class AlertManager {
     static let sharedManager = AlertManager()
     
     private(set) var alerts : [Alert] = []
-    
     private let session : NSURLSession
+    
+    private var lastUpdate : NSDate?
+    
+    var isInBackground : Bool = false {
+        didSet {
+            notifier?.background = isInBackground
+            if isInBackground {
+                prepareForBackground()
+            } else {
+                prepareForForground()
+            }
+        }
+    }
+    
+    
+    func backgroundUpdate(completion : (Bool) -> Void) {
+        guard let min = minimumRemainingTime else {
+            print("Failed to update alerts.")
+            completion(false)
+            return
+        }
+        
+        print("Remote Alert initiated background update.")
+        let group = dispatch_group_create()
+
+        scheduledAlerts.forEach {
+            dispatch_group_enter(group)
+            var new = $0
+            if case .Scheduled = new.state {
+                new = tickAlert(new, tick: min) {
+                    print("Alert updated: \($0)")
+                    dispatch_group_leave(group)
+                }
+            }
+
+        }
+        
+        dispatch_group_notify(group, dispatch_get_main_queue()) {
+            self.prepareForBackground()
+            completion(!self.triggeredAlerts.isEmpty)
+        }
+    }
+    
+    private func prepareForBackground() {
+        guard let min = minimumRemainingTime else {
+            print("No Scheduled alerts were found. App will never be awaken to update status.")
+            return
+        }
+        lastUpdate = NSDate()
+        saveStorage()
+        timer?.invalidate()
+        UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(NSTimeInterval(min))
+        print("Remote Alert has scheduled update in \(min) seconds.")
+    }
+    
+    private func prepareForForground() {
+        notifier?.notifyAlertsTriggered(triggeredAlerts)
+        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(updateTick), userInfo: nil, repeats: true)
+        print("Remote Alert has become active.")
+    }
     
     /// Used to refresh alerts
     private var timer : NSTimer!
@@ -22,22 +81,22 @@ class AlertManager {
     
     init() {
         session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(updateTick), userInfo: nil, repeats: true)
-        
+        notifier = AudioAlertNotifier()
         loadStorage()
-//        [
-//            createAlert("http://mop.wow-freakz.com/test/always_true.php", interval: 3, enabled: true),
-//            createAlert("http://mop.wow-freakz.com/test/always_false.php", interval: 2, enabled: true),
-//            createAlert("http://mop.wow-freakz.com/test/random.php", interval: 3, enabled: true)
-//        ].forEach {
-//            saveAlert($0)
-//        }
-        scheduleAll()
-       
+        if alerts.isEmpty {
+            [
+                createAlert("http://mop.wow-freakz.com/test/always_true.php", interval: 3, enabled: true),
+                createAlert("http://mop.wow-freakz.com/test/always_false.php", interval: 2, enabled: true),
+                createAlert("http://mop.wow-freakz.com/test/random.php", interval: 3, enabled: true)
+                ].forEach {
+                    saveAlert($0)
+            }
+        }
+        scheduleAll()        
     }
     
     var triggeredAlerts : [Alert] {
-        return self.alerts.filter({
+        return alerts.filter({
             if case .Triggered = $0.state {
                 return true
             }
@@ -45,6 +104,49 @@ class AlertManager {
         })
     }
     
+    var scheduledAlerts : [Alert] {
+        return alerts.filter({
+            if case .Scheduled = $0.state {
+                return true
+            }
+            return false
+        })
+    }
+    
+    var minimumRemainingTime : Int?  {
+        let test : [Int] =  alerts.flatMap{
+            if case .Scheduled(let time) = $0.state {
+                return time
+            }
+            return nil
+        }
+        
+        if let min = test.minElement() {
+            return min
+        }
+        return nil
+    }
+    
+    deinit {
+        saveStorage()
+        timer.invalidate()
+    }
+}
+
+// MARK: Generation
+extension AlertManager {
+    func createAlert(url : String, interval : Int, enabled : Bool) -> Alert {
+        let ids = alerts.map{$0.id}
+        var unique : Int
+        repeat {
+            unique = Int(arc4random())
+        } while ids.contains(unique)
+        return Alert(id: unique, url: url, interval: interval, enabled: enabled, state: .Unknown)
+    }
+}
+
+// MARK: - Modification
+extension AlertManager {
     func removeAlert(alert : Alert) {
         alerts[alert] = nil
         removeFromSchedule(alert)
@@ -83,31 +185,30 @@ class AlertManager {
             resetAlert($0)
         }
     }
+}
+
+// MARK: Lifecycle
+private extension AlertManager {
     
-    private func scheduleAll() {
+    /// Updates array of alerts and triggers delegate.
+    func updateAlert(alert : Alert) {
+        alerts[alert] = alert
+        delegate?.alertManager(self, didUpdateAlert: alert)
+        print("Alert \(alert.state): \(alert).")
+    }
+    
+    func scheduleAll() {
         alerts.forEach{scheduleAlert($0)}
     }
     
-    private func scheduleAlert(alert : Alert) {
+    func scheduleAlert(alert : Alert) {
         if var existing = alerts[alert] where existing.enabled {
             existing.state = .Scheduled(alert.interval)
             updateAlert(existing)
         }
     }
     
-    /// Updates array of alerts and triggers delegate.
-    private func updateAlert(alert : Alert) {
-        alerts[alert] = alert
-        delegate?.alertManager(self, didUpdateAlert: alert)
-        print("Alert \(alert.state): \(alert).")
-    }
-    
-    /// Performs any actions to notify user (play sound, bring alert).
-    private func triggerAlert(alert : Alert) {
-        AudioServicesPlayAlertSound(SystemSoundID(1000)) // CalendarAlert
-    }
-    
-    private func removeFromSchedule(alert : Alert) {
+    func removeFromSchedule(alert : Alert) {
         guard var existing = alerts[alert] else {
             return
         }
@@ -115,24 +216,12 @@ class AlertManager {
         updateAlert(existing)
     }
     
-    private enum Keys : String {
-        case Alerts = "kAlerts"
-    }
-    
-    deinit {
-        timer.invalidate()
-    }
-}
-
-// MARK: Updater
-private extension AlertManager {
     @objc func updateTick(timer : NSTimer) {
-        alerts = alerts.map { tickAlert($0) }
+        alerts = alerts.map { tickAlert($0, tick: Int(timer.timeInterval)) }
     }
     
     /// Decrements remaining time for alert and updates it's state
-    func tickAlert(alert : Alert) -> Alert {
-        let tick = Int(timer.timeInterval)
+    func tickAlert(alert : Alert, tick : Int, completion : ((Alert) -> ())? = nil) -> Alert {
         if case let .Scheduled(current) = alert.state {
             var new = alert
             let remaining = current - tick
@@ -147,8 +236,10 @@ private extension AlertManager {
                         if self.notifier == nil {
                             print("AlertNotifier wasn't set, triggered alerts won't be notified.")
                         }
-                    default: break
+                    default:
+                        break
                     }
+                    completion?(new)
                 }
             } else {
                 new.state = .Scheduled(remaining)
@@ -197,28 +288,25 @@ private extension AlertManager {
     }
 }
 
-// MARK: Generation
-extension AlertManager {
-    func createAlert(url : String, interval : Int, enabled : Bool) -> Alert {
-        let ids = alerts.map{$0.id}
-        var unique : Int
-        repeat {
-            unique = Int(arc4random())
-        } while ids.contains(unique)
-        return Alert(id: unique, url: url, interval: interval, enabled: enabled, state: .Unknown)
-    }
-}
-
 // MARK: Persistence
 private extension AlertManager {
+    
+    enum Keys : String {
+        case Alerts = "kAlerts"
+        case LastUpdate = "kLastUpdate"
+    }
+    
     func saveStorage() {
         let archived = alerts.map{$0.archived()}
+        print("Saving \(archived)")
         Storage.local[Keys.Alerts.rawValue] = archived
+        Storage.local[Keys.Alerts.rawValue] = lastUpdate ?? NSDate()
     }
     
     func loadStorage() {
-        let archived = Storage.local.loadObjectForKey(Keys.Alerts.rawValue) as? [[String : AnyObject]] ?? []
+        let archived = Storage.local[Keys.Alerts.rawValue] as? [[String : AnyObject]] ?? []
         alerts = archived.flatMap{Alert(fromArchive: $0)}
+        lastUpdate = Storage.local[Keys.LastUpdate.rawValue] as? NSDate
         print("Alerts loaded (\(alerts.count)): \n\(alerts.reduce(""){$0 + "\($1)\n"}))")
     }
 }
