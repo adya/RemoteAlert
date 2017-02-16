@@ -10,6 +10,7 @@
 		000194D81E527C37008600AC /* TSTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000194D61E527C37008600AC /* TSTextField.swift */; };
 		000194D91E527C38008600AC /* TSViewEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000194D71E527C37008600AC /* TSViewEx.swift */; };
 		003E26C41E52539500864E0A /* Alert.wav in Resources */ = {isa = PBXBuildFile; fileRef = 003E26C31E52539500864E0A /* Alert.wav */; };
+		00874EFC1E563413002126DB /* silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 00874EFB1E563413002126DB /* silence.mp3 */; };
 		00D4469C1E4F6C030036635F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4469B1E4F6C030036635F /* AppDelegate.swift */; };
 		00D4469E1E4F6C030036635F /* AlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4469D1E4F6C030036635F /* AlertsViewController.swift */; };
 		00D446A11E4F6C030036635F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00D4469F1E4F6C030036635F /* Main.storyboard */; };
@@ -58,6 +59,7 @@
 		000194D61E527C37008600AC /* TSTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSTextField.swift; sourceTree = "<group>"; };
 		000194D71E527C37008600AC /* TSViewEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSViewEx.swift; sourceTree = "<group>"; };
 		003E26C31E52539500864E0A /* Alert.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Alert.wav; sourceTree = "<group>"; };
+		00874EFB1E563413002126DB /* silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = silence.mp3; sourceTree = "<group>"; };
 		00D446981E4F6C030036635F /* Remote Alert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Remote Alert.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D4469B1E4F6C030036635F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		00D4469D1E4F6C030036635F /* AlertsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewController.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				00D446A71E4F6C030036635F /* Info.plist */,
 				00D447411E513C0C0036635F /* Utils.swift */,
 				003E26C31E52539500864E0A /* Alert.wav */,
+				00874EFB1E563413002126DB /* silence.mp3 */,
 			);
 			path = "Remote Alert";
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00874EFC1E563413002126DB /* silence.mp3 in Resources */,
 				00D446A61E4F6C030036635F /* LaunchScreen.storyboard in Resources */,
 				00D446A31E4F6C030036635F /* Assets.xcassets in Resources */,
 				00D446A11E4F6C030036635F /* Main.storyboard in Resources */,

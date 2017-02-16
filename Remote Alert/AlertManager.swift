@@ -14,6 +14,8 @@ class AlertManager {
     
     private let session : NSURLSession
     
+    private let backgroundPlayer : AVPlayer!
+    
     /// Used to refresh alerts
     private var timer : NSTimer!
     
@@ -21,19 +23,26 @@ class AlertManager {
     var notifier : AlertNotifier?
     
     init() {
+        let _ = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: AVAudioSessionCategoryOptions.MixWithOthers)
         session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
+        let url = NSBundle.mainBundle().URLForResource("silence", withExtension: "mp3")
+        backgroundPlayer = AVPlayer(URL: url!)
+        backgroundPlayer.actionAtItemEnd = .None // keep it alive
+        backgroundPlayer.play()
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(updateTick), userInfo: nil, repeats: true)
         
         loadStorage()
-//        [
-//            createAlert("http://mop.wow-freakz.com/test/always_true.php", interval: 3, enabled: true),
-//            createAlert("http://mop.wow-freakz.com/test/always_false.php", interval: 2, enabled: true),
-//            createAlert("http://mop.wow-freakz.com/test/random.php", interval: 3, enabled: true)
-//        ].forEach {
-//            saveAlert($0)
-//        }
+        if alerts.isEmpty {
+            [
+                createAlert("http://mop.wow-freakz.com/test/always_true.php", interval: 3, enabled: true),
+                createAlert("http://mop.wow-freakz.com/test/always_false.php", interval: 2, enabled: true),
+                createAlert("http://mop.wow-freakz.com/test/random.php", interval: 3, enabled: true)
+                ].forEach {
+                    saveAlert($0)
+            }
+        }
         scheduleAll()
-       
+        
     }
     
     var triggeredAlerts : [Alert] {
