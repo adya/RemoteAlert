@@ -67,6 +67,7 @@
 		00B589D71E56766B00993D92 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		00B589D91E572A0700993D92 /* SilentChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SilentChecker.h; sourceTree = "<group>"; };
 		00B589DA1E572A0700993D92 /* SilentChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SilentChecker.m; sourceTree = "<group>"; };
+		00B589DC1E57309E00993D92 /* MuteChecker.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MuteChecker.caf; sourceTree = "<group>"; };
 		00D446981E4F6C030036635F /* Remote Alert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Remote Alert.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D4469B1E4F6C030036635F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		00D4469D1E4F6C030036635F /* AlertsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewController.swift; sourceTree = "<group>"; };
@@ -167,6 +168,7 @@
 				003E26C31E52539500864E0A /* Alert.wav */,
 				00874EFB1E563413002126DB /* silence.mp3 */,
 				00B589D91E572A0700993D92 /* SilentChecker.h */,
+				00B589DC1E57309E00993D92 /* MuteChecker.caf */,
 				00B589DA1E572A0700993D92 /* SilentChecker.m */,
 			);
 			path = "Remote Alert";

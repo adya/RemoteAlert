@@ -41,9 +41,15 @@ class AudioAlertNotifier : AlertNotifier {
     }
     
     func notifyAlertsTriggered(alerts: [Alert]) {
-        if !alerts.isEmpty && !(player?.playing ?? false) && !audioChecker.silentMode {
-            audioChecker.volume = 1.0
-            play()
+        if !alerts.isEmpty && !(player?.playing ?? false) {
+            audioChecker.silentMode() {
+                guard !$0 else {
+                    return
+                }
+                self.audioChecker.volume = 1.0
+                self.play()
+            }
+            
         }
     }
     
@@ -109,7 +115,9 @@ private class AudioChecker : MPVolumeView {
         }
     }
     
-    var silentMode : Bool {
-        return SilentChecker.muteSwitchEnabled()
+    func silentMode(completion : (Bool) -> Void) {
+        MuteChecker() { _, muted in
+            completion(muted)
+            }.check()
     }
 }
