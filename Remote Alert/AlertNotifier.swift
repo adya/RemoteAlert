@@ -1,5 +1,6 @@
 import UIKit
 import AVFoundation
+import MediaPlayer
 
 protocol AlertNotifier {
     func notifyAlertsTriggered(alert : [Alert])
@@ -10,6 +11,8 @@ class AudioAlertNotifier : AlertNotifier {
     
     private var player : AVAudioPlayer?
     private let audio : NSURL?
+    private let audioChecker = AudioChecker()
+    
     var background: Bool = false
     
     init() {
@@ -21,14 +24,6 @@ class AudioAlertNotifier : AlertNotifier {
         audio = NSURL(fileURLWithPath: path)
         player = nil
     }
-    
-    private func setSystemVolumeLevel(newVolumeLevel : Float) {
-        let avSystemControllerClass = NSClassFromString("AVSystemController") as? NSObjectProtocol
-        let avSystemControllerInstance = avSystemControllerClass?.performSelector(Selector("sharedAVSystemController"))?.takeUnretainedValue()
-        let category = AVAudioSessionCategoryPlayback
-        avSystemControllerInstance?.performSelector(Selector("setVolumeTo:forCategory:"), withObject: newVolumeLevel, withObject: category)
-    }
-
     
     private func play() {
         player?.stop()
@@ -46,11 +41,12 @@ class AudioAlertNotifier : AlertNotifier {
     }
     
     func notifyAlertsTriggered(alerts: [Alert]) {
-        if !alerts.isEmpty && !(player?.playing ?? false) {
-            setSystemVolumeLevel(1.0)
+        if !alerts.isEmpty && !(player?.playing ?? false) && !audioChecker.silentMode {
+            audioChecker.volume = 1.0
             play()
         }
     }
+    
 }
 
 class UIAlertNotifier : AudioAlertNotifier {
@@ -84,5 +80,36 @@ class UIAlertNotifier : AudioAlertNotifier {
         if !background && !alerts.isEmpty && controller.presentedViewController == nil {
             controller.presentViewController(alertController, animated: true, completion: nil)
         }
+    }
+}
+
+private class AudioChecker : MPVolumeView {
+    private var volumeSlider : UISlider {
+        self.showsRouteButton = false
+        self.showsVolumeSlider = false
+        self.hidden = true
+        var slider = UISlider()
+        for subview in self.subviews {
+            if subview.isKindOfClass(UISlider){
+                slider = subview as! UISlider
+                slider.continuous = false
+                (subview as! UISlider).value = AVAudioSession.sharedInstance().outputVolume
+                return slider
+            }
+        }
+        return slider
+    }
+    
+    var volume : Float {
+        get {
+            return volumeSlider.value
+        }
+        set {
+            volumeSlider.value = newValue
+        }
+    }
+    
+    var silentMode : Bool {
+        return SilentChecker.muteSwitchEnabled()
     }
 }
