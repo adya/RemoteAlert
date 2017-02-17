@@ -13,7 +13,7 @@
 		00874EFC1E563413002126DB /* silence.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 00874EFB1E563413002126DB /* silence.mp3 */; };
 		00B589D61E5675F200993D92 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B589D51E5675F200993D92 /* AVFoundation.framework */; };
 		00B589D81E56766B00993D92 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B589D71E56766B00993D92 /* UIKit.framework */; };
-		00B589DB1E572A0700993D92 /* SilentChecker.m in Sources */ = {isa = PBXBuildFile; fileRef = 00B589DA1E572A0700993D92 /* SilentChecker.m */; };
+		00B589DE1E57379800993D92 /* SilentChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B589DD1E57379800993D92 /* SilentChecker.swift */; };
 		00D4469C1E4F6C030036635F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4469B1E4F6C030036635F /* AppDelegate.swift */; };
 		00D4469E1E4F6C030036635F /* AlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4469D1E4F6C030036635F /* AlertsViewController.swift */; };
 		00D446A11E4F6C030036635F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00D4469F1E4F6C030036635F /* Main.storyboard */; };
@@ -65,9 +65,7 @@
 		00874EFB1E563413002126DB /* silence.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = silence.mp3; sourceTree = "<group>"; };
 		00B589D51E5675F200993D92 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		00B589D71E56766B00993D92 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		00B589D91E572A0700993D92 /* SilentChecker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SilentChecker.h; sourceTree = "<group>"; };
-		00B589DA1E572A0700993D92 /* SilentChecker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SilentChecker.m; sourceTree = "<group>"; };
-		00B589DC1E57309E00993D92 /* MuteChecker.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = MuteChecker.caf; sourceTree = "<group>"; };
+		00B589DD1E57379800993D92 /* SilentChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentChecker.swift; sourceTree = "<group>"; };
 		00D446981E4F6C030036635F /* Remote Alert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Remote Alert.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D4469B1E4F6C030036635F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		00D4469D1E4F6C030036635F /* AlertsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewController.swift; sourceTree = "<group>"; };
@@ -167,9 +165,7 @@
 				00D447411E513C0C0036635F /* Utils.swift */,
 				003E26C31E52539500864E0A /* Alert.wav */,
 				00874EFB1E563413002126DB /* silence.mp3 */,
-				00B589D91E572A0700993D92 /* SilentChecker.h */,
-				00B589DC1E57309E00993D92 /* MuteChecker.caf */,
-				00B589DA1E572A0700993D92 /* SilentChecker.m */,
+				00B589DD1E57379800993D92 /* SilentChecker.swift */,
 			);
 			path = "Remote Alert";
 			sourceTree = "<group>";
@@ -312,6 +308,7 @@
 			files = (
 				00D447281E50D1DC0036635F /* NilValidator.swift in Sources */,
 				00D447401E50D2540036635F /* Archivable.swift in Sources */,
+				00B589DE1E57379800993D92 /* SilentChecker.swift in Sources */,
 				000194D81E527C37008600AC /* TSTextField.swift in Sources */,
 				00D4470C1E50D19F0036635F /* TSRegex.swift in Sources */,
 				00D4473C1E50D24F0036635F /* StorageProvider.swift in Sources */,
@@ -337,7 +334,6 @@
 				00D447291E50D1DC0036635F /* NonEmptyValidator.swift in Sources */,
 				00D446B21E4F755C0036635F /* Alert.swift in Sources */,
 				00D4472B1E50D1DC0036635F /* PatternValidator.swift in Sources */,
-				00B589DB1E572A0700993D92 /* SilentChecker.m in Sources */,
 				00D4473B1E50D24F0036635F /* Storage.swift in Sources */,
 				00D447231E50D1DC0036635F /* Countable.swift in Sources */,
 				00D447311E50D1DC0036635F /* ValueValidator.swift in Sources */,

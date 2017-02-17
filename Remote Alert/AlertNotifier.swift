@@ -90,6 +90,9 @@ class UIAlertNotifier : AudioAlertNotifier {
 }
 
 private class AudioChecker : MPVolumeView {
+    
+    private let checker = SilentChecker()
+    
     private var volumeSlider : UISlider {
         self.showsRouteButton = false
         self.showsVolumeSlider = false
@@ -116,8 +119,8 @@ private class AudioChecker : MPVolumeView {
     }
     
     func silentMode(completion : (Bool) -> Void) {
-        MuteChecker() { _, muted in
+        checker.check() { muted in
             completion(muted)
-            }.check()
+        }
     }
 }
