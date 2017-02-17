@@ -1,5 +1,6 @@
 import Foundation
 import AVFoundation
+import UIKit
 
 protocol AlertManagerDelegate {
     /// Occurs whenever `AlertManager` updates alert's state
@@ -32,15 +33,15 @@ class AlertManager {
         timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(updateTick), userInfo: nil, repeats: true)
         
         loadStorage()
-        if alerts.isEmpty {
-            [
-                createAlert("http://mop.wow-freakz.com/test/always_true.php", interval: 3, enabled: true),
-                createAlert("http://mop.wow-freakz.com/test/always_false.php", interval: 2, enabled: true),
-                createAlert("http://mop.wow-freakz.com/test/random.php", interval: 3, enabled: true)
-                ].forEach {
-                    saveAlert($0)
-            }
-        }
+//        if alerts.isEmpty {
+//            [
+//                createAlert("http://mop.wow-freakz.com/test/always_true.php", interval: 3, enabled: true),
+//                createAlert("http://mop.wow-freakz.com/test/always_false.php", interval: 2, enabled: true),
+//                createAlert("http://mop.wow-freakz.com/test/random.php", interval: 3, enabled: true)
+//                ].forEach {
+//                    saveAlert($0)
+//            }
+//        }
         scheduleAll()
         
     }
@@ -109,11 +110,6 @@ class AlertManager {
         alerts[alert] = alert
         delegate?.alertManager(self, didUpdateAlert: alert)
         print("Alert \(alert.state): \(alert).")
-    }
-    
-    /// Performs any actions to notify user (play sound, bring alert).
-    private func triggerAlert(alert : Alert) {
-        AudioServicesPlayAlertSound(SystemSoundID(1000)) // CalendarAlert
     }
     
     private func removeFromSchedule(alert : Alert) {

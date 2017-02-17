@@ -22,6 +22,14 @@ class AudioAlertNotifier : AlertNotifier {
         player = nil
     }
     
+    private func setSystemVolumeLevel(newVolumeLevel : Float) {
+        let avSystemControllerClass = NSClassFromString("AVSystemController") as? NSObjectProtocol
+        let avSystemControllerInstance = avSystemControllerClass?.performSelector(Selector("sharedAVSystemController"))?.takeUnretainedValue()
+        let category = AVAudioSessionCategoryPlayback
+        avSystemControllerInstance?.performSelector(Selector("setVolumeTo:forCategory:"), withObject: newVolumeLevel, withObject: category)
+    }
+
+    
     private func play() {
         player?.stop()
         guard let audio = audio, player = try? AVAudioPlayer(contentsOfURL: audio) else {
@@ -39,6 +47,7 @@ class AudioAlertNotifier : AlertNotifier {
     
     func notifyAlertsTriggered(alerts: [Alert]) {
         if !alerts.isEmpty && !(player?.playing ?? false) {
+            setSystemVolumeLevel(1.0)
             play()
         }
     }
