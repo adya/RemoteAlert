@@ -11,7 +11,7 @@ class AudioAlertNotifier : AlertNotifier {
     
     private var player : AVAudioPlayer?
     private let audio : NSURL?
-    private let audioChecker = AudioChecker()
+    private var audioChecker = AudioChecker()
     
     var background: Bool = false
     
@@ -42,6 +42,7 @@ class AudioAlertNotifier : AlertNotifier {
     
     func notifyAlertsTriggered(alerts: [Alert]) {
         if !alerts.isEmpty && !(player?.playing ?? false) {
+            audioChecker = AudioChecker()
             audioChecker.silentMode() {
                 guard !$0 else {
                     return
