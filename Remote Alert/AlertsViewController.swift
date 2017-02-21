@@ -7,6 +7,7 @@ class AlertsViewController: UIViewController, UIPopoverPresentationControllerDel
     }
     
     @IBOutlet weak private var tvAlerts: UITableView!
+    @IBOutlet weak private var tvDebug: UITextView!
     
     private let manager = AlertManager.sharedManager
     private var editor : AddAlertViewController!
@@ -27,8 +28,19 @@ class AlertsViewController: UIViewController, UIPopoverPresentationControllerDel
         manager.notifier = UIAlertNotifier(presentingViewController: self)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        manager.debugDelegate = self
+    }
+    
     @IBAction func addAction(sender: UIButton) {
         showPopover(sender)
+    }
+    
+    @IBAction func clipboardAction(sender: UIButton) {
+        if let debug = tvDebug.text {
+            UIPasteboard.generalPasteboard().string = debug
+        }
     }
     
     func showPopover(base: UIView)
@@ -90,6 +102,26 @@ extension AlertsViewController : AlertManagerDelegate {
             viewModel[index] = EditableAlertViewModel(alert: alert)
             tvAlerts.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .None)
         }
+    }
+}
+
+extension AlertsViewController : DebugDelegate {
+    func debug(alertManager: AlertManager, hasDebugInfo info: String, withTimestamp timestamp: NSDate) {
+        printDebug(alertManager, message: info, timestamp: timestamp)
+    }
+    
+    func debug(alertNotifier: AlertNotifier, hasDebugInfo info: String, withTimestamp timestamp: NSDate) {
+        printDebug(alertNotifier, message: info, timestamp: timestamp)
+    }
+    
+    func debug(silentChecker: SilentChecker, hasDebugInfo info: String, withTimestamp timestamp: NSDate) {
+        printDebug(silentChecker, message: info, timestamp: timestamp)
+    }
+    
+    func printDebug(sender : Any, message : String, timestamp : NSDate) {
+        let debug = "\(timestamp.toString(withFormat: "HH:mm:ss.SSS")) - \(sender.dynamicType): \(message)"
+        print(debug)
+        tvDebug.text = tvDebug.text.stringByAppendingString("\n\(debug)")
     }
 }
 

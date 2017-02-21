@@ -20,8 +20,18 @@ class AlertManager {
     /// Used to refresh alerts
     private var timer : NSTimer!
     
+    var debugDelegate : DebugDelegate? {
+        didSet {
+            notifier?.debugDelegate = debugDelegate
+        }
+    }
+    
     var delegate : AlertManagerDelegate?
-    var notifier : AlertNotifier?
+    var notifier : AlertNotifier? {
+        didSet {
+            notifier?.debugDelegate = debugDelegate
+        }
+    }
     
     init() {
         let _ = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: AVAudioSessionCategoryOptions.MixWithOthers)
@@ -208,7 +218,7 @@ extension AlertManager {
         let ids = alerts.map{$0.id}
         var unique : Int
         repeat {
-            unique = Int(arc4random())
+            unique = Int(arc4random_uniform(100000))
         } while ids.contains(unique)
         return Alert(id: unique, url: url, interval: interval, enabled: enabled, state: .Unknown)
     }

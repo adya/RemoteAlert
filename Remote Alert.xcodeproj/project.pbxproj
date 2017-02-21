@@ -14,6 +14,8 @@
 		00B589D61E5675F200993D92 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B589D51E5675F200993D92 /* AVFoundation.framework */; };
 		00B589D81E56766B00993D92 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B589D71E56766B00993D92 /* UIKit.framework */; };
 		00B589DE1E57379800993D92 /* SilentChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B589DD1E57379800993D92 /* SilentChecker.swift */; };
+		00B58A2D1E5C99B100993D92 /* DebugDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B58A2C1E5C99B100993D92 /* DebugDelegate.swift */; };
+		00B58A301E5CA81900993D92 /* TSDateEx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00B58A2F1E5CA81900993D92 /* TSDateEx.swift */; };
 		00D4469C1E4F6C030036635F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4469B1E4F6C030036635F /* AppDelegate.swift */; };
 		00D4469E1E4F6C030036635F /* AlertsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D4469D1E4F6C030036635F /* AlertsViewController.swift */; };
 		00D446A11E4F6C030036635F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 00D4469F1E4F6C030036635F /* Main.storyboard */; };
@@ -66,6 +68,8 @@
 		00B589D51E5675F200993D92 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		00B589D71E56766B00993D92 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		00B589DD1E57379800993D92 /* SilentChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SilentChecker.swift; sourceTree = "<group>"; };
+		00B58A2C1E5C99B100993D92 /* DebugDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugDelegate.swift; sourceTree = "<group>"; };
+		00B58A2F1E5CA81900993D92 /* TSDateEx.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSDateEx.swift; sourceTree = "<group>"; };
 		00D446981E4F6C030036635F /* Remote Alert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Remote Alert.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		00D4469B1E4F6C030036635F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		00D4469D1E4F6C030036635F /* AlertsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsViewController.swift; sourceTree = "<group>"; };
@@ -127,6 +131,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		00B58A2E1E5CA09900993D92 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				00D4469F1E4F6C030036635F /* Main.storyboard */,
+				00D446E01E4F8AED0036635F /* AddAlertViewController.xib */,
+				00D446A21E4F6C030036635F /* Assets.xcassets */,
+				00D446A41E4F6C030036635F /* LaunchScreen.storyboard */,
+				003E26C31E52539500864E0A /* Alert.wav */,
+				00874EFB1E563413002126DB /* silence.mp3 */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		00D4468F1E4F6C030036635F = {
 			isa = PBXGroup;
 			children = (
@@ -150,22 +167,18 @@
 			children = (
 				00D446E41E4F8CB30036635F /* TSKit */,
 				00D4469B1E4F6C030036635F /* AppDelegate.swift */,
-				00D4469F1E4F6C030036635F /* Main.storyboard */,
 				00D4469D1E4F6C030036635F /* AlertsViewController.swift */,
 				00D446AD1E4F6C6A0036635F /* AddAlertViewController.swift */,
-				00D446E01E4F8AED0036635F /* AddAlertViewController.xib */,
 				00D446DE1E4F82760036635F /* AlertCell.swift */,
 				00D446B11E4F755C0036635F /* Alert.swift */,
 				00D446B31E4F76230036635F /* AlertViewModel.swift */,
 				00D446E51E4F8FFB0036635F /* AlertManager.swift */,
 				00D447431E51C7AB0036635F /* AlertNotifier.swift */,
-				00D446A21E4F6C030036635F /* Assets.xcassets */,
-				00D446A41E4F6C030036635F /* LaunchScreen.storyboard */,
-				00D446A71E4F6C030036635F /* Info.plist */,
 				00D447411E513C0C0036635F /* Utils.swift */,
-				003E26C31E52539500864E0A /* Alert.wav */,
-				00874EFB1E563413002126DB /* silence.mp3 */,
 				00B589DD1E57379800993D92 /* SilentChecker.swift */,
+				00B58A2C1E5C99B100993D92 /* DebugDelegate.swift */,
+				00D446A71E4F6C030036635F /* Info.plist */,
+				00B58A2E1E5CA09900993D92 /* Resources */,
 			);
 			path = "Remote Alert";
 			sourceTree = "<group>";
@@ -175,6 +188,7 @@
 			children = (
 				000194D61E527C37008600AC /* TSTextField.swift */,
 				000194D71E527C37008600AC /* TSViewEx.swift */,
+				00B58A2F1E5CA81900993D92 /* TSDateEx.swift */,
 				00D4470F1E50D1DC0036635F /* TSValidation */,
 				00D447071E50D19F0036635F /* TSArchitectureBase.swift */,
 				00D447321E50D24F0036635F /* TSStorage */,
@@ -325,6 +339,7 @@
 				00D447251E50D1DC0036635F /* InvertedValidator.swift in Sources */,
 				00D447261E50D1DC0036635F /* LengthValidator.swift in Sources */,
 				00D4469E1E4F6C030036635F /* AlertsViewController.swift in Sources */,
+				00B58A301E5CA81900993D92 /* TSDateEx.swift in Sources */,
 				00D4473D1E50D24F0036635F /* UbiquitousStorageProvider.swift in Sources */,
 				00D4470A1E50D19F0036635F /* TSArchitectureBase.swift in Sources */,
 				00D4473A1E50D24F0036635F /* DictionaryStorageProvider.swift in Sources */,
@@ -343,6 +358,7 @@
 				00D4472C1E50D1DC0036635F /* Textual.swift in Sources */,
 				00D447221E50D1DC0036635F /* CompoundValidator.swift in Sources */,
 				00D446B41E4F76230036635F /* AlertViewModel.swift in Sources */,
+				00B58A2D1E5C99B100993D92 /* DebugDelegate.swift in Sources */,
 				00D4470B1E50D19F0036635F /* TSCollectionsViewEx.swift in Sources */,
 				00D4473E1E50D24F0036635F /* UserDefaultsStorageProvider.swift in Sources */,
 				00D447301E50D1DC0036635F /* Validator.swift in Sources */,

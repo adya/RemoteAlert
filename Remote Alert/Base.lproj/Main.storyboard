@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Alerts View Controller-->
@@ -61,7 +62,6 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.35686275360000003" green="0.69019609689999994" blue="0.15686275059999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstItem="BEG-zw-dHM" firstAttribute="centerY" secondItem="jX7-NZ-oom" secondAttribute="centerY" id="0kN-uW-VQU"/>
                                                 <constraint firstItem="BEG-zw-dHM" firstAttribute="top" secondItem="jX7-NZ-oom" secondAttribute="top" constant="8" id="0mg-DV-qFT"/>
@@ -174,17 +174,85 @@
                                     <constraint firstAttribute="bottom" secondItem="yp6-SK-cvd" secondAttribute="bottom" id="fwM-Hh-SFI"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mxo-uF-j1J">
+                                <rect key="frame" x="0.0" y="290" width="600" height="40"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X4x-UQ-pzl">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="2"/>
+                                        <color key="backgroundColor" red="0.87450980389999999" green="0.21960784310000001" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="2" id="4TX-ae-sSg"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wun-Lc-iHC">
+                                        <rect key="frame" x="0.0" y="38" width="600" height="2"/>
+                                        <color key="backgroundColor" red="0.87450980389999999" green="0.21960784310000001" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="2" id="OVb-IP-Gtk"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Debug stuff goes below:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NOn-A8-C4Z">
+                                        <rect key="frame" x="8" y="11" width="158" height="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mam-4e-NuI">
+                                        <rect key="frame" x="456" y="3" width="136" height="34"/>
+                                        <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                        <state key="normal" title="Copy debug stuff">
+                                            <color key="titleColor" red="0.87450980389999999" green="0.21960784310000001" blue="0.058823529409999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clipboardAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rgR-Sg-3Qa"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="X4x-UQ-pzl" firstAttribute="leading" secondItem="NOn-A8-C4Z" secondAttribute="trailing" id="Cf9-6d-HsA"/>
+                                    <constraint firstItem="X4x-UQ-pzl" firstAttribute="top" secondItem="Mxo-uF-j1J" secondAttribute="top" id="VWG-6W-ueG"/>
+                                    <constraint firstAttribute="trailing" secondItem="X4x-UQ-pzl" secondAttribute="trailing" id="YDP-VI-s4S"/>
+                                    <constraint firstAttribute="height" constant="40" id="bUc-dd-nEp"/>
+                                    <constraint firstItem="X4x-UQ-pzl" firstAttribute="leading" secondItem="Mxo-uF-j1J" secondAttribute="leading" id="c6H-cU-AX2"/>
+                                    <constraint firstItem="mam-4e-NuI" firstAttribute="centerY" secondItem="Mxo-uF-j1J" secondAttribute="centerY" id="cQS-P2-x3i"/>
+                                    <constraint firstItem="NOn-A8-C4Z" firstAttribute="leading" secondItem="Mxo-uF-j1J" secondAttribute="leading" constant="8" id="d5B-Wz-hiV"/>
+                                    <constraint firstAttribute="bottom" secondItem="Wun-Lc-iHC" secondAttribute="bottom" id="ipA-nw-jTG"/>
+                                    <constraint firstAttribute="trailing" secondItem="mam-4e-NuI" secondAttribute="trailing" constant="8" id="nkT-14-sNo"/>
+                                    <constraint firstItem="NOn-A8-C4Z" firstAttribute="centerY" secondItem="Mxo-uF-j1J" secondAttribute="centerY" id="uXj-0t-9d6"/>
+                                    <constraint firstAttribute="trailing" secondItem="Wun-Lc-iHC" secondAttribute="trailing" id="xJS-LS-pCC"/>
+                                    <constraint firstItem="Wun-Lc-iHC" firstAttribute="leading" secondItem="Mxo-uF-j1J" secondAttribute="leading" id="y8a-00-ZZU"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Cf9-6d-HsA"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Nhn-pa-Ksa">
+                                <rect key="frame" x="0.0" y="330" width="600" height="270"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="eW4-UI-Z0d" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="4TT-9T-jKC"/>
+                            <constraint firstItem="Nhn-pa-Ksa" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.45" id="5KE-Du-IZ7"/>
+                            <constraint firstItem="Nhn-pa-Ksa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="ACi-mN-EEq"/>
                             <constraint firstItem="SeO-Nt-6Q3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="H8j-3a-TfK"/>
+                            <constraint firstItem="Nhn-pa-Ksa" firstAttribute="top" secondItem="Mxo-uF-j1J" secondAttribute="bottom" id="Uav-s6-y9L"/>
                             <constraint firstAttribute="trailing" secondItem="eW4-UI-Z0d" secondAttribute="trailing" id="WCt-ye-BLM"/>
+                            <constraint firstItem="Mxo-uF-j1J" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="WJL-cX-VUU"/>
                             <constraint firstItem="eW4-UI-Z0d" firstAttribute="top" secondItem="SeO-Nt-6Q3" secondAttribute="bottom" id="YeI-48-dSE"/>
                             <constraint firstItem="eW4-UI-Z0d" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="cLk-dM-5A3"/>
+                            <constraint firstAttribute="trailing" secondItem="Mxo-uF-j1J" secondAttribute="trailing" id="dqt-1o-236"/>
                             <constraint firstAttribute="trailing" secondItem="SeO-Nt-6Q3" secondAttribute="trailing" id="fJm-VS-Ung"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="Nhn-pa-Ksa" secondAttribute="bottom" id="fp4-rx-OPW"/>
                             <constraint firstItem="SeO-Nt-6Q3" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="lhP-YG-aaD"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="eW4-UI-Z0d" secondAttribute="bottom" id="oKo-Sk-8sv"/>
+                            <constraint firstAttribute="trailing" secondItem="Nhn-pa-Ksa" secondAttribute="trailing" id="wjs-vB-ZoY"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -194,6 +262,7 @@
                     </view>
                     <connections>
                         <outlet property="tvAlerts" destination="eW4-UI-Z0d" id="zHT-V3-bho"/>
+                        <outlet property="tvDebug" destination="Nhn-pa-Ksa" id="hRJ-HR-aal"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
