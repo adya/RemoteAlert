@@ -1,28 +1,28 @@
 enum AlertState {
     
     /// Alerts hasn't been checked yet.
-    case Unknown
+    case unknown
     
     /// Alert has invalid properties.
-    case Invalid
+    case invalid
     
     /// Alert failed to fetch status from given `url`.
-    case Broken
+    case broken
     
     /// Alert is valid and ready to be checked.
-    case Idle
+    case idle
     
     /// Alert is scheduled. Associated value represents time left before trigger
-    case Scheduled(Int)
+    case scheduled(Int)
     
     /// Alert is being checked.
-    case Fired
+    case fired
     
     /// Alert has been checked and skipped.
-    case Skipped
+    case skipped
     
     /// Alert has been checked and triggered.
-    case Triggered
+    case triggered
 }
 
 struct Alert : Hashable, CustomStringConvertible {
@@ -31,7 +31,7 @@ struct Alert : Hashable, CustomStringConvertible {
     var interval : Int
     var enabled : Bool
     
-    var state = AlertState.Unknown
+    var state = AlertState.unknown
     
     var hashValue: Int {
         return id
@@ -54,7 +54,7 @@ func != (first : Alert, second : Alert) -> Bool {
 
 extension Alert : Archivable {
     
-    private enum Keys : String {
+    fileprivate enum Keys : String {
         case kId = "kAlertId"
         case kInterval = "kAlertInterval"
         case kUrl = "kAlertUrl"
@@ -62,20 +62,20 @@ extension Alert : Archivable {
     }
     
     func archived() -> [String : AnyObject] {
-        return [Keys.kId.rawValue : id,
-                Keys.kInterval.rawValue : interval,
-                Keys.kUrl.rawValue : url,
-                Keys.kEnabled.rawValue : enabled
+        return [Keys.kId.rawValue : id as AnyObject,
+                Keys.kInterval.rawValue : interval as AnyObject,
+                Keys.kUrl.rawValue : url as AnyObject,
+                Keys.kEnabled.rawValue : enabled as AnyObject
         ]
     }
     
     init?(fromArchive archive: [String : AnyObject]) {
         guard let id = archive[Keys.kId.rawValue] as? Int,
-            url = archive[Keys.kUrl.rawValue] as? String,
-            interval = archive[Keys.kInterval.rawValue] as? Int,
-            enabled = archive[Keys.kEnabled.rawValue] as? Bool else {
+            let url = archive[Keys.kUrl.rawValue] as? String,
+            let interval = archive[Keys.kInterval.rawValue] as? Int,
+            let enabled = archive[Keys.kEnabled.rawValue] as? Bool else {
                 return nil
         }
-        self.init(id: id, url: url, interval: interval, enabled: enabled, state: .Unknown)
+        self.init(id: id, url: url, interval: interval, enabled: enabled, state: .unknown)
     }
 }

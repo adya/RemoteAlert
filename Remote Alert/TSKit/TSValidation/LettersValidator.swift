@@ -1,5 +1,7 @@
 /// Validates letters only.
-struct LettersValidator : ProxyValidator {
-    let proxyValidator : Validator = PatternValidator(pattern: "[a-zA-Z]+")
-    let failedMessage = "Only letters are allowed"
+open class LettersValidator : ProxyValidator {
+    init() {
+        super.init(proxy: PatternValidator(pattern: "[a-zA-Z]+"),
+                   message: "Only letters are allowed")
+    }
 }

@@ -1,23 +1,25 @@
 class UbiquitousStorageProvider : StorageProvider {
-    private var storage = NSUbiquitousKeyValueStore.defaultStore()
+    fileprivate var storage = NSUbiquitousKeyValueStore.default()
     
-    subscript(key : String) -> AnyObject? {
+    subscript(key : String) -> Any? {
         set {
             if newValue == nil {
-                storage.setObject(nil, forKey: key)
+                storage.removeObject(forKey: key)
+            } else if let newValue = newValue as? AnyObject {
+                storage.set(newValue, forKey: key)
             } else {
-                storage.setObject(newValue, forKey: key)
+                print("\(type(of: self)): Value can't be stored.")
             }
         }
         get {
-            return storage.objectForKey(key)
+            return storage.object(forKey: key)
         }
     }
     
     func removeAll() {
         let keys = dictionary.keys
         for key in keys {
-            storage.removeObjectForKey(key)
+            storage.removeObject(forKey: key)
         }
         storage.synchronize()
     }
@@ -29,7 +31,7 @@ class UbiquitousStorageProvider : StorageProvider {
         }
     }
     
-    var dictionary: [String : AnyObject]{
+    var dictionary: [String : Any]{
         return storage.dictionaryRepresentation
     }
     

@@ -23,7 +23,7 @@ extension AlertViewModel {
 
 struct NewAlertViewModel : AlertViewModel {
     var alert : Alert? {
-        guard let url = urlProperty.value, interval = intervalProperty.value where isValid else {
+        guard let url = urlProperty.value, let interval = intervalProperty.value, isValid else {
             return nil
         }
         
@@ -46,18 +46,18 @@ struct NewAlertViewModel : AlertViewModel {
         enabled = alert?.enabled ?? true
         active = false
         if let state = alert?.state{
-            if case let .Scheduled(rem) = state {
+            if case let .scheduled(rem) = state {
                 remaining = rem
             }
             switch state {
-            case .Scheduled, .Fired, .Skipped : active = true
+            case .scheduled, .fired, .skipped : active = true
             default: active = false
             }
             status = "\(state)"
-            if case .Triggered = state {
+            if case .triggered = state {
                 statusColor = UIColor.mainColor()
             } else {
-                statusColor = UIColor.darkTextColor()
+                statusColor = UIColor.darkText
             }
         }
     }
@@ -68,14 +68,14 @@ struct EditableAlertViewModel : AlertViewModel {
     
     var urlProperty : ValidatableProperty<String> {
         didSet {
-            if let url = urlProperty.value where urlProperty.isValid {
+            if let url = urlProperty.value, urlProperty.isValid {
                 alert?.url = url
             }
         }
     }
     var intervalProperty : ValidatableProperty<Int> {
         didSet {
-            if let interval = intervalProperty.value where intervalProperty.isValid {
+            if let interval = intervalProperty.value, intervalProperty.isValid {
                 alert?.interval = interval
             }
         }
@@ -98,19 +98,19 @@ struct EditableAlertViewModel : AlertViewModel {
         urlProperty = ValidatableProperty(value: alert.url, validators: [NilValidator(), LengthValidator(minLength: 3)])
         intervalProperty = ValidatableProperty(value: alert.interval, validators: [NilValidator(), ValueValidator(minValue: 1)])
         enabled = alert.enabled
-        if case let .Scheduled(rem) = alert.state {
+        if case let .scheduled(rem) = alert.state {
             remaining = rem
         }
         switch alert.state {
-        case .Scheduled, .Fired, .Skipped : active = true
+        case .scheduled, .fired, .skipped : active = true
         default: active = false
         }
         
         status = "\(alert.state)"
-        if case .Triggered = alert.state {
+        if case .triggered = alert.state {
             statusColor = UIColor.mainColor()
         } else {
-            statusColor = UIColor.darkTextColor()
+            statusColor = UIColor.darkText
         }
     }
 

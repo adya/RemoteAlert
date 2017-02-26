@@ -1,25 +1,25 @@
 /// `NSUserDefaults` storage data source.
 class UserDefaultsStorageProvider : StorageProvider {
-    private var storage = NSUserDefaults.standardUserDefaults()
+    fileprivate var storage = UserDefaults.standard
     
-    subscript(key : String) -> AnyObject? {
+    subscript(key : String) -> Any? {
         set {
             if newValue == nil {
-                storage.setObject(nil, forKey: key)
-                storage.synchronize()
+                storage.set(nil, forKey: key)
+            } else if let newValue = newValue as? AnyObject {
+                storage.set(newValue, forKey: key)
             } else {
-                storage.setObject(newValue, forKey: key)
-                storage.synchronize()
+                print("\(type(of: self)): Value can't be stored.")
             }
         }
         get {
-            return storage.objectForKey(key)
+            return storage.object(forKey: key)
         }
     }
     
     func removeAll() {
-        if let id = NSBundle.mainBundle().bundleIdentifier {
-            storage.removePersistentDomainForName(id)
+        if let id = Bundle.main.bundleIdentifier {
+            storage.removePersistentDomain(forName: id)
         }
     }
     
@@ -29,10 +29,9 @@ class UserDefaultsStorageProvider : StorageProvider {
         }
     }
     
-    var dictionary: [String : AnyObject]{
+    var dictionary: [String : Any]{
         return storage.dictionaryRepresentation()
     }
-    
     deinit {
         storage.synchronize()
     }

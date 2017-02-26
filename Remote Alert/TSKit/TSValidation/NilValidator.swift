@@ -1,7 +1,11 @@
-struct NilValidator : Validator {
-    let failedMessage = "Value can't be empty"
+/// Requires value to be not `nil`.
+/// - Parameter Any: Accepts any values.
+open class NilValidator : Validator {
+    open let failedMessage = "Value can't be empty"
     
-    func validate(value: Any?) -> Bool {
+    open func validate(_ value: Any?) -> Bool {
         return value != nil
     }
+    
+    public init() {}
 }

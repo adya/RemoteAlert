@@ -2,24 +2,24 @@ import UIKit
 
 class AlertsViewController: UIViewController, UIPopoverPresentationControllerDelegate, AlertEditorDelegate {
 
-    private enum Segues : String {
+    fileprivate enum Segues : String {
         case addAlert = "segPopup"
     }
     
-    @IBOutlet weak private var tvAlerts: UITableView!
-    @IBOutlet weak private var tvDebug: UITextView!
+    @IBOutlet weak fileprivate var tvAlerts: UITableView!
+    @IBOutlet weak fileprivate var tvDebug: UITextView!
     
-    private let manager = AlertManager.sharedManager
-    private var editor : AddAlertViewController!
-    private var viewModel : [AlertViewModel]!
-    private var selectedAlert : NSIndexPath?
+    fileprivate let manager = AlertManager.sharedManager
+    fileprivate var editor : AddAlertViewController!
+    fileprivate var viewModel : [AlertViewModel]!
+    fileprivate var selectedAlert : IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel = manager.alerts.map{EditableAlertViewModel(alert: $0)}
         editor = AddAlertViewController(manager: manager)
-        editor.modalPresentationStyle = .Popover
-        editor.modalInPopover = true
+        editor.modalPresentationStyle = .popover
+        editor.isModalInPopover = true
         editor.preferredContentSize = CGSize(width: 300, height: 180)
         editor.delegate = self
         manager.delegate = self
@@ -27,69 +27,69 @@ class AlertsViewController: UIViewController, UIPopoverPresentationControllerDel
         tvAlerts.rowHeight = UITableViewAutomaticDimension
         manager.notifier = UIAlertNotifier(presentingViewController: self)
     }
+//    
+//    override func viewWillAppear(animated: Bool) {
+//        super.viewWillAppear(animated)
+//        manager.debugDelegate = self
+//    }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        manager.debugDelegate = self
-    }
-    
-    @IBAction func addAction(sender: UIButton) {
+    @IBAction func addAction(_ sender: UIButton) {
         showPopover(sender)
     }
     
-    @IBAction func clipboardAction(sender: UIButton) {
+    @IBAction func clipboardAction(_ sender: UIButton) {
         if let debug = tvDebug.text {
-            UIPasteboard.generalPasteboard().string = debug
+            UIPasteboard.general.string = debug
         }
     }
     
-    func showPopover(base: UIView)
+    func showPopover(_ base: UIView)
     {
         if let popover = editor.popoverPresentationController {
             popover.delegate = self
             popover.sourceView = base
             popover.sourceRect = base.bounds
-            popover.permittedArrowDirections = [.Up, .Down]
-            self.presentViewController(editor, animated: true, completion: nil)
+            popover.permittedArrowDirections = [.up, .down]
+            self.present(editor, animated: true, completion: nil)
         }
     }
     
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
-        return .None
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
 
-    func alertEditor(editor: AlertEditor, didEdit alert: AlertViewModel) {
-        if let index = selectedAlert where alert.isValid {
+    func alertEditor(_ editor: AlertEditor, didEdit alert: AlertViewModel) {
+        if let index = selectedAlert, alert.isValid {
             viewModel[index.row] = alert
-            tvAlerts.reloadRowsAtIndexPaths([index], withRowAnimation: .Automatic)
+            tvAlerts.reloadRows(at: [index], with: .automatic)
             selectedAlert = nil
         }
-        dismissViewControllerAnimated(true) { _ in
+        dismiss(animated: true) { _ in
             editor.reset()
             self.manager.notifier?.notifyAlertsTriggered(self.manager.triggeredAlerts)
         }
     }
     
-    func alertEditor(editor: AlertEditor, didAdd alertViewModel: AlertViewModel) {
+    func alertEditor(_ editor: AlertEditor, didAdd alertViewModel: AlertViewModel) {
         
-        if let alert = alertViewModel.alert where alertViewModel.isValid {
+        if let alert = alertViewModel.alert, alertViewModel.isValid {
             let isFirst = !hasAlerts
             viewModel?.append(EditableAlertViewModel(alert: alert))
             if isFirst {
                 tvAlerts.reloadData()
             } else {
-                tvAlerts.insertRowsAtIndexPaths([NSIndexPath(forRow: viewModel.count - 1, inSection: 0)], withRowAnimation: .Automatic)
+                tvAlerts.insertRows(at: [IndexPath(row: viewModel.count - 1, section: 0)], with: .automatic)
             }
             manager.saveAlert(alert)
         }
-        dismissViewControllerAnimated(true) { _ in
+        dismiss(animated: true) { _ in
             editor.reset()
             self.manager.notifier?.notifyAlertsTriggered(self.manager.triggeredAlerts)
         }
     }
     
-    func alertEditorDidCancel(editor: AlertEditor) {
-        dismissViewControllerAnimated(true) { _ in
+    func alertEditorDidCancel(_ editor: AlertEditor) {
+        dismiss(animated: true) { _ in
             editor.reset()
             self.manager.notifier?.notifyAlertsTriggered(self.manager.triggeredAlerts)
         }
@@ -97,47 +97,47 @@ class AlertsViewController: UIViewController, UIPopoverPresentationControllerDel
 }
 
 extension AlertsViewController : AlertManagerDelegate {
-    func alertManager(manager: AlertManager, didUpdateAlert alert: Alert) {
-        if let index = viewModel.indexOf({$0.alert! == alert}) {
+    func alertManager(_ manager: AlertManager, didUpdateAlert alert: Alert) {
+        if let index = viewModel.index(where: {$0.alert! == alert}) {
             viewModel[index] = EditableAlertViewModel(alert: alert)
-            tvAlerts.reloadRowsAtIndexPaths([NSIndexPath(forRow: index, inSection: 0)], withRowAnimation: .None)
+            tvAlerts.reloadRows(at: [IndexPath(row: index, section: 0)], with: .none)
         }
     }
 }
 
 extension AlertsViewController : DebugDelegate {
-    func debug(alertManager: AlertManager, hasDebugInfo info: String, withTimestamp timestamp: NSDate) {
+    func debug(_ alertManager: AlertManager, hasDebugInfo info: String, withTimestamp timestamp: Date) {
         printDebug(alertManager, message: info, timestamp: timestamp)
     }
     
-    func debug(alertNotifier: AlertNotifier, hasDebugInfo info: String, withTimestamp timestamp: NSDate) {
+    func debug(_ alertNotifier: AlertNotifier, hasDebugInfo info: String, withTimestamp timestamp: Date) {
         printDebug(alertNotifier, message: info, timestamp: timestamp)
     }
     
-    func debug(silentChecker: SilentChecker, hasDebugInfo info: String, withTimestamp timestamp: NSDate) {
+    func debug(_ silentChecker: SilentChecker, hasDebugInfo info: String, withTimestamp timestamp: Date) {
         printDebug(silentChecker, message: info, timestamp: timestamp)
     }
     
-    func printDebug(sender : Any, message : String, timestamp : NSDate) {
-        let debug = "\(timestamp.toString(withFormat: "HH:mm:ss.SSS")) - \(sender.dynamicType): \(message)"
+    func printDebug(_ sender : Any, message : String, timestamp : Date) {
+        let debug = "\(timestamp.toString(withFormat: "HH:mm:ss.SSS")) - \(type(of: sender)): \(message)"
         print(debug)
-        tvDebug.text = tvDebug.text.stringByAppendingString("\n\(debug)")
+        tvDebug.text = tvDebug.text + "\n\(debug)"
     }
 }
 
 
 extension AlertsViewController : UITableViewDelegate, UITableViewDataSource {
-    private var hasAlerts : Bool {
+    fileprivate var hasAlerts : Bool {
         return viewModel?.count ?? 0 > 0
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return hasAlerts ? viewModel!.count : 1
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard hasAlerts else {
-            let cell = tableView.dequeueReusableCellWithIdentifier("EmptyCell")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyCell")
             return cell!
         }
         let cell = tableView.dequeueReusableCellOfType(AlertCell.self)
@@ -151,15 +151,15 @@ extension AlertsViewController : UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return hasAlerts
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if hasAlerts && editingStyle == .Delete {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if hasAlerts && editingStyle == .delete {
             if let alert = viewModel[indexPath.row].alert {
                 manager.removeAlert(alert)
-                viewModel.removeAtIndex(indexPath.row)
+                viewModel.remove(at: indexPath.row)
                 tableView.reloadData()
 //                if !hasAlerts {
 //                    tableView.reloadData()
@@ -170,16 +170,16 @@ extension AlertsViewController : UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if hasAlerts, let alert = viewModel[indexPath.row].alert where !alert.enabled {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if hasAlerts, let alert = viewModel[indexPath.row].alert, !alert.enabled {
             editor.setAlert(alert)
             selectedAlert = indexPath
-            if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+            if let cell = tableView.cellForRow(at: indexPath) {
                 showPopover(cell)
             }
         } else if hasAlerts {
             print("Can't edited active alert.")
         }
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

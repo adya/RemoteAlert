@@ -4,21 +4,21 @@ import UIKit
 
 protocol AlertManagerDelegate {
     /// Occurs whenever `AlertManager` updates alert's state
-    func alertManager(manager : AlertManager, didUpdateAlert alert : Alert)
+    func alertManager(_ manager : AlertManager, didUpdateAlert alert : Alert)
 }
 
 class AlertManager {
     
     static let sharedManager = AlertManager()
     
-    private(set) var alerts : [Alert] = []
+    fileprivate(set) var alerts : [Alert] = []
     
-    private let session : NSURLSession
+    fileprivate let session : URLSession
     
-    private let backgroundPlayer : AVPlayer!
+    fileprivate let backgroundPlayer : AVPlayer!
     
     /// Used to refresh alerts
-    private var timer : NSTimer!
+    fileprivate var timer : Timer!
     
     var debugDelegate : DebugDelegate? {
         didSet {
@@ -34,13 +34,13 @@ class AlertManager {
     }
     
     init() {
-        let _ = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: AVAudioSessionCategoryOptions.MixWithOthers)
-        session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration())
-        let url = NSBundle.mainBundle().URLForResource("silence", withExtension: "mp3")
-        backgroundPlayer = AVPlayer(URL: url!)
-        backgroundPlayer.actionAtItemEnd = .None // keep it alive
+        let _ = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: AVAudioSessionCategoryOptions.mixWithOthers)
+        session = URLSession(configuration: URLSessionConfiguration.default)
+        let url = Bundle.main.url(forResource: "silence", withExtension: "mp3")
+        backgroundPlayer = AVPlayer(url: url!)
+        backgroundPlayer.actionAtItemEnd = .none // keep it alive
         backgroundPlayer.play()
-        timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(updateTick), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateTick), userInfo: nil, repeats: true)
         
         loadStorage()
 //        if alerts.isEmpty {
@@ -58,20 +58,20 @@ class AlertManager {
     
     var triggeredAlerts : [Alert] {
         return self.alerts.filter({
-            if case .Triggered = $0.state {
+            if case .triggered = $0.state {
                 return true
             }
             return false
         })
     }
     
-    func removeAlert(alert : Alert) {
+    func removeAlert(_ alert : Alert) {
         alerts[alert] = nil
         removeFromSchedule(alert)
         saveStorage()
     }
     
-    func saveAlert(alert : Alert) {
+    func saveAlert(_ alert : Alert) {
         let existing = alerts[alert]
         if existing == nil{
             alerts.append(alert)
@@ -91,8 +91,8 @@ class AlertManager {
         }
     }
     
-    func resetAlert(alert : Alert) {
-        guard case .Triggered = alert.state else {
+    func resetAlert(_ alert : Alert) {
+        guard case .triggered = alert.state else {
             return
         }
         scheduleAlert(alert)
@@ -104,33 +104,33 @@ class AlertManager {
         }
     }
     
-    private func scheduleAll() {
+    fileprivate func scheduleAll() {
         alerts.forEach{scheduleAlert($0)}
     }
     
-    private func scheduleAlert(alert : Alert) {
-        if var existing = alerts[alert] where existing.enabled {
-            existing.state = .Scheduled(alert.interval)
+    fileprivate func scheduleAlert(_ alert : Alert) {
+        if var existing = alerts[alert], existing.enabled {
+            existing.state = .scheduled(alert.interval)
             updateAlert(existing)
         }
     }
     
     /// Updates array of alerts and triggers delegate.
-    private func updateAlert(alert : Alert) {
+    fileprivate func updateAlert(_ alert : Alert) {
         alerts[alert] = alert
         delegate?.alertManager(self, didUpdateAlert: alert)
         print("Alert \(alert.state): \(alert).")
     }
     
-    private func removeFromSchedule(alert : Alert) {
+    fileprivate func removeFromSchedule(_ alert : Alert) {
         guard var existing = alerts[alert] else {
             return
         }
-        existing.state = .Idle
+        existing.state = .idle
         updateAlert(existing)
     }
     
-    private enum Keys : String {
+    fileprivate enum Keys : String {
         case Alerts = "kAlerts"
     }
     
@@ -141,23 +141,23 @@ class AlertManager {
 
 // MARK: Updater
 private extension AlertManager {
-    @objc func updateTick(timer : NSTimer) {
+    @objc func updateTick(_ timer : Timer) {
         alerts = alerts.map { tickAlert($0) }
     }
     
     /// Decrements remaining time for alert and updates it's state
-    func tickAlert(alert : Alert) -> Alert {
+    func tickAlert(_ alert : Alert) -> Alert {
         let tick = Int(timer.timeInterval)
-        if case let .Scheduled(current) = alert.state {
+        if case let .scheduled(current) = alert.state {
             var new = alert
             let remaining = current - tick
             if remaining <= 0 {
-                new.state = .Fired
+                new.state = .fired
                 checkAlert(new) {
                     self.updateAlert($0)
                     switch $0.state {
-                    case .Skipped: self.scheduleAlert(new)
-                    case .Triggered:
+                    case .skipped: self.scheduleAlert(new)
+                    case .triggered:
                         self.notifier?.notifyAlertsTriggered(self.triggeredAlerts)
                         if self.notifier == nil {
                             print("AlertNotifier wasn't set, triggered alerts won't be notified.")
@@ -166,7 +166,7 @@ private extension AlertManager {
                     }
                 }
             } else {
-                new.state = .Scheduled(remaining)
+                new.state = .scheduled(remaining)
             }
             delegate?.alertManager(self, didUpdateAlert: new)
             return new
@@ -175,38 +175,38 @@ private extension AlertManager {
     }
     
     /// Checks alert url.
-    func checkAlert(alert : Alert, completion : ((Alert) -> ())? = nil) {
-        if let url = NSURL(string: alert.url) {
+    func checkAlert(_ alert : Alert, completion : ((Alert) -> ())? = nil) {
+        if let url = URL(string: alert.url) {
             print("Checking alert: \(alert)...")
-            session.dataTaskWithURL(url) {data,_,_ in
+            session.dataTask(with: url, completionHandler: {data,_,_ in
                 var new = alert
                 defer {
-                    dispatch_async(dispatch_get_main_queue()) {
+                    DispatchQueue.main.async {
                         completion?(new)
                     }
                 }
-                guard let data = data, string = String(data: data, encoding: NSUTF8StringEncoding) else {
+                guard let data = data, let string = String(data: data, encoding: String.Encoding.utf8) else {
                     print("Request failed: \(alert).")
-                    new.state = .Broken
+                    new.state = .broken
                     new.enabled = false
                     return
                 }
-                guard let value = Int(string) where (0...1).contains(value) else {
+                guard let value = Int(string), (0...1).contains(value) else {
                     print("Unexpected response: \(alert).")
-                    new.state = .Broken
+                    new.state = .broken
                     new.enabled = false
                     return
                 }
                 
                 if value == 0 {
-                    new.state = .Skipped
+                    new.state = .skipped
                 } else {
-                    new.state = .Triggered
+                    new.state = .triggered
                 }
-                }.resume()
+                }) .resume()
         } else {
             var new = alert
-            new.state = .Invalid
+            new.state = .invalid
             print("Invalid url: \(alert).")
         }
     }
@@ -214,13 +214,13 @@ private extension AlertManager {
 
 // MARK: Generation
 extension AlertManager {
-    func createAlert(url : String, interval : Int, enabled : Bool) -> Alert {
+    func createAlert(_ url : String, interval : Int, enabled : Bool) -> Alert {
         let ids = alerts.map{$0.id}
         var unique : Int
         repeat {
             unique = Int(arc4random_uniform(100000))
         } while ids.contains(unique)
-        return Alert(id: unique, url: url, interval: interval, enabled: enabled, state: .Unknown)
+        return Alert(id: unique, url: url, interval: interval, enabled: enabled, state: .unknown)
     }
 }
 
@@ -228,7 +228,7 @@ extension AlertManager {
 private extension AlertManager {
     func saveStorage() {
         let archived = alerts.map{$0.archived()}
-        Storage.local[Keys.Alerts.rawValue] = archived
+        Storage.local[Keys.Alerts.rawValue] = archived as AnyObject?
     }
     
     func loadStorage() {

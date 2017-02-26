@@ -1,11 +1,11 @@
 import Foundation
 
 // MARK: - Grouping
-public extension SequenceType {
+public extension Sequence {
     
     /// Groups any sequence by the key specified in the closure and creates a dictionary.
-    public func groupBy<G : Hashable>(closure : (Generator.Element) -> G?) -> [G : [Generator.Element]] {
-        let results : [G: Array<Generator.Element>] = self.reduce([:]) {
+    public func groupBy<G : Hashable>(_ closure : (Iterator.Element) -> G?) -> [G : [Iterator.Element]] {
+        let results : [G: Array<Iterator.Element>] = self.reduce([:]) {
             guard let key = closure($1) else {
                 return $0
             }
@@ -24,14 +24,14 @@ public extension SequenceType {
 }
 
 // MARK: - Distinct
-public extension SequenceType where Generator.Element: Hashable {
-    public var distinct : [Generator.Element] {
+public extension Sequence where Iterator.Element: Hashable {
+    public var distinct : [Iterator.Element] {
         return Array(Set(self))
     }
 }
 
-public extension SequenceType where Generator.Element : Equatable {
-    public var distinct : [Generator.Element] {
+public extension Sequence where Iterator.Element : Equatable {
+    public var distinct : [Iterator.Element] {
         return self.reduce([]){uniqueElements, element in
             uniqueElements.contains(element)
                 ? uniqueElements
@@ -40,9 +40,9 @@ public extension SequenceType where Generator.Element : Equatable {
     }
 }
 
-public extension SequenceType {
-    public func distinct<T : Equatable>(@noescape transform: (Self.Generator.Element) -> T?) -> [Generator.Element] {
-        return self.reduce(([], [])){ (unique : ([T], [Generator.Element]), element : Generator.Element) in
+public extension Sequence {
+    public func distinct<T : Equatable>(_ transform: (Self.Iterator.Element) -> T?) -> [Iterator.Element] {
+        return self.reduce(([], [])){ (unique : ([T], [Iterator.Element]), element : Iterator.Element) in
             guard let key = transform(element) else {
                 return unique
             }
@@ -57,9 +57,9 @@ public extension SequenceType {
 
 public extension Dictionary {
     /// Returns filtered dictionary.
-    public func filter(@noescape includeElement: (Generator.Element) throws -> Bool) rethrows -> [Key : Value] {
+    public func filter(includeElement: (Iterator.Element) throws -> Bool) rethrows -> [Key : Value] {
         var dict = [Key : Value]()
-        let res : [Generator.Element] = try self.filter(includeElement)
+        let res : [Iterator.Element] = try self.filter(includeElement)
         res.forEach { dict[$0.0] = $0.1 }
         return dict
     }
@@ -69,41 +69,40 @@ public extension Dictionary {
 public extension Array where Element : Equatable {
     
     /// Allows to access element in the array by it's value. This can be handy when you need to update value in the array and don't know its index.
-    /// - Attetion: Do not use this subscript to directly modify properties of contained objects.
-    public subscript (element : Generator.Element) -> Generator.Element? {
+    public subscript (element : Iterator.Element) -> Iterator.Element? {
         get {
-            if let index = self.indexOf(element) {
+            if let index = self.index(of: element) {
                 return self[index]
             } else {
                 return nil
             }
         }
         set {
-            if let index = self.indexOf(element) {
+            if let index = self.index(of: element) {
                 if let newValue = newValue {
                     self[index] = newValue
                 } else {
-                    self.removeAtIndex(index)   
+                    self.remove(at: index)
                 }
             }
         }
     }
 }
 
-public func +=<K, V> (inout left: [K : V], right: [K : V]) { for (k, v) in right { left[k] = v } }
+public func +=<K, V> (left: inout [K : V], right: [K : V]) { for (k, v) in right { left[k] = v } }
 
 // MARK: - Random
 /// Adds handy random support.
-public extension IntervalType {
+public extension Range {
     /// Gets random value from the interval.
     public var random : Bound {
-        let range = (self.end as! Float) - (self.start as! Float)
-        let randomValue = (Float(arc4random_uniform(UINT32_MAX)) / Float(UINT32_MAX)) * range + (self.start as! Float)
+        let range = (self.upperBound as! Float) - (self.lowerBound as! Float)
+        let randomValue = (Float(arc4random_uniform(UInt32.max)) / Float(UInt32.max)) * range + (self.lowerBound as! Float)
         return randomValue as! Bound
     }
 }
 
-public extension CollectionType {
+public extension Collection {
     /// Gets random value from the range.
     public var random : Self._Element {
         if let startIndex = self.startIndex as? Int {
@@ -111,7 +110,7 @@ public extension CollectionType {
             let end = UInt32(self.endIndex as! Int)
             return self[Int(arc4random_uniform(end - start) + start) as! Self.Index]
         }
-        var generator = self.generate()
+        var generator = self.makeIterator()
         var count = arc4random_uniform(UInt32(self.count as! Int))
         while count > 0 {
             let _ = generator.next()
@@ -126,25 +125,13 @@ public extension Array {
     public var shuffled : Array {
         var shuffled = self
         self.indices.dropLast().forEach { a in
-            guard case let b = Int(arc4random_uniform(UInt32(self.count - a))) + a where b != a else { return }
+            guard case let b = Int(arc4random_uniform(UInt32(self.count - a))) + a, b != a else { return }
             shuffled[a] = self[b]
         }
         return self
     }
     
     /// Gets random `n` elements from the array.
-    public func random(n: Int) -> Array { return Array(self.shuffled.prefix(n)) }
+    public func random(_ n: Int) -> Array { return Array(self.shuffled.prefix(n)) }
 
-}
-
-// MARK: - Strings
-public extension String {
-    
-    public var range : Range<String.Index> {
-        return self.startIndex..<self.endIndex
-    }
-    
-    public var nsrange : NSRange {
-        return NSMakeRange(0, self.characters.count)
-    }
 }

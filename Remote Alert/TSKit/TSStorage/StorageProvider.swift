@@ -2,7 +2,7 @@
 protocol StorageProvider : class {
     
     /// Gets or sets value for given key.
-    subscript(key : String) -> AnyObject? {get set}
+    subscript(key : String) -> Any? {get set}
     
     /// Removes all stored values.
     func removeAll()
@@ -11,5 +11,5 @@ protocol StorageProvider : class {
     var count : Int {get}
     
     /// Returns dictionary representation of the storage.
-    var dictionary : [String : AnyObject] {get}
+    var dictionary : [String : Any] {get}
 }

@@ -2,49 +2,49 @@
 import Foundation
 
 @available(iOS 8.0, *)
-public extension NSDate {
+public extension Date {
     
     @available(iOS 8.0, *)
     public func toString(withFormat targetFormat : String,
-                 andTimezone timezone : NSTimeZone = NSTimeZone.defaultTimeZone()) -> String {
-        let formatter = NSDateFormatter()
+                 andTimezone timezone : TimeZone = TimeZone.current) -> String {
+        let formatter = DateFormatter()
         formatter.dateFormat = targetFormat
         formatter.timeZone = timezone
-        return formatter.stringFromDate(self)
+        return formatter.string(from: self)
     }
     
     @available(iOS 8.0, *)
-    public class func fromString(dateString : String,
+    public static func fromString(_ dateString : String,
                           withFormat targetFormat: String,
-                         andTimezone timezone : NSTimeZone = NSTimeZone.defaultTimeZone()) -> NSDate? {
-        let formatter = NSDateFormatter()
+                         andTimezone timezone : TimeZone = TimeZone.current) -> Date? {
+        let formatter = DateFormatter()
         formatter.dateFormat = targetFormat
         formatter.timeZone = timezone
-        return formatter.dateFromString(dateString)
+        return formatter.date(from: dateString)
     }
     
     @available(iOS 8.0, *)
-    public func dateWithComponents(dateComponents: NSCalendarUnit) -> NSDate {
-        let comps = NSCalendar.currentCalendar().components(dateComponents, fromDate: self)
-        return NSCalendar.currentCalendar().dateFromComponents(comps)!
+    public func dateWithComponents(_ dateComponents: NSCalendar.Unit) -> Date {
+        let comps = (Calendar.current as NSCalendar).components(dateComponents, from: self)
+        return Calendar.current.date(from: comps)!
     }
     
     /// Returns date with date components only.
     @available(iOS 8.0, *)
-    public var onlyDate : NSDate {
-        return self.dateWithComponents([.Year, .Month, .Day])
+    public var onlyDate : Date {
+        return self.dateWithComponents([.year, .month, .day])
     }
     
     /// Returns date with time components only.
     @available(iOS 8.0, *)
-    public var onlyTime : NSDate {
-        return self.dateWithComponents([.Hour, .Minute, .Second])
+    public var onlyTime : Date {
+        return self.dateWithComponents([.hour, .minute, .second])
     }
     
     /// Returns date with date components only including nanoseconds.
     @available(iOS 8.0, *)
-    public var preciseTime : NSDate {
-        return self.dateWithComponents([.Hour, .Minute, .Second, .Nanosecond])
+    public var preciseTime : Date {
+        return self.dateWithComponents([.hour, .minute, .second, .nanosecond])
     }
 }
 
@@ -52,22 +52,22 @@ public extension NSDate {
 public extension String {
     
     @available(iOS 8.0, *)
-    @available(*, deprecated, message="Use NSDate's convertFromString method instead.")
+    @available(*, deprecated, message: "Use NSDate's convertFromString method instead.")
     public func toDate(withFormat targetFormat : String,
-                  timezone : NSTimeZone = NSTimeZone.defaultTimeZone()) -> NSDate? {
-        let formatter = NSDateFormatter()
+                  timezone : TimeZone = TimeZone.current) -> Date? {
+        let formatter = DateFormatter()
         formatter.dateFormat = targetFormat
         formatter.timeZone = timezone
-        return formatter.dateFromString(self)
+        return formatter.date(from: self)
     }
     
     @available(iOS 8.0, *)
-    public func reformatDate(stringDate : String,
+    public func reformatDate(_ stringDate : String,
                       withFormat sourceFormat : String,
-                     andTimezone sourceTimezone: NSTimeZone = NSTimeZone.defaultTimeZone(),
+                     andTimezone sourceTimezone: TimeZone = TimeZone.current,
                         toFormat targetFormat: String,
-                     andTimezone targetTimezone : NSTimeZone = NSTimeZone.defaultTimeZone()) -> String? {
-        if let date = NSDate.fromString(stringDate, withFormat: sourceFormat, andTimezone: sourceTimezone) {
+                     andTimezone targetTimezone : TimeZone = TimeZone.current) -> String? {
+        if let date = Date.fromString(stringDate, withFormat: sourceFormat, andTimezone: sourceTimezone) {
             return date.toString(withFormat: targetFormat, andTimezone: targetTimezone)
         }
         return nil
@@ -76,126 +76,114 @@ public extension String {
 }
 
 public enum TSDateComponents {
-    case Days(Int), Months(Int), Years(Int)
-    case Hours(Int), Minutes(Int), Seconds(Int), Nanoseconds(Int)
+    case days(Int), months(Int), years(Int)
+    case hours(Int), minutes(Int), seconds(Int), nanoseconds(Int)
 }
 
 /// Subtracts given components from the date and returns resulting date.
 @available(iOS 8.0, *)
-public func -(date : NSDate, dateComponents: [TSDateComponents]) -> NSDate? {
-    let comps = NSDateComponents()
+public func -(date : Date, dateComponents: [TSDateComponents]) -> Date? {
+    var comps = DateComponents()
     for dateComponent in dateComponents {
         switch dateComponent {
-        case .Days(let days):
+        case .days(let days):
             comps.day = (days > 0 ? -days : days)
-        case .Months(let months):
+        case .months(let months):
             comps.month = (months > 0 ? -months : months)
-        case .Years(let years):
+        case .years(let years):
             comps.year = (years > 0 ? -years : years)
-        case .Hours(let hours):
+        case .hours(let hours):
             comps.hour = (hours > 0 ? -hours : hours)
-        case .Minutes(let mins):
+        case .minutes(let mins):
             comps.minute = (mins > 0 ? -mins : mins)
-        case .Seconds(let secs):
+        case .seconds(let secs):
             comps.second = (secs > 0 ? -secs : secs)
-        case .Nanoseconds(let nsecs):
+        case .nanoseconds(let nsecs):
             comps.nanosecond = (nsecs > 0 ? -nsecs : nsecs)
         }
     }
-    return NSCalendar.currentCalendar().dateByAddingComponents(comps, toDate: date, options: [])
+    return (Calendar.current as NSCalendar).date(byAdding: comps, to: date, options: [])
 }
 
 /// Adds given components to the date and returns resulting date.
 @available(iOS 8.0, *)
-public func +(date : NSDate, dateComponents: [TSDateComponents]) -> NSDate? {
-    let comps = NSDateComponents()
+public func +(date : Date, dateComponents: [TSDateComponents]) -> Date? {
+    var comps = DateComponents()
     for dateComponent in dateComponents {
         switch dateComponent {
-        case .Days(let days):
+        case .days(let days):
             comps.day = days
-        case .Months(let months):
+        case .months(let months):
             comps.month = months
-        case .Years(let years):
+        case .years(let years):
             comps.year = years
-        case .Hours(let hours):
+        case .hours(let hours):
             comps.hour = hours
-        case .Minutes(let mins):
+        case .minutes(let mins):
             comps.minute = mins
-        case .Seconds(let secs):
+        case .seconds(let secs):
             comps.second = secs
-        case .Nanoseconds(let nsecs):
+        case .nanoseconds(let nsecs):
             comps.nanosecond = nsecs
         }
     }
-    return NSCalendar.currentCalendar().dateByAddingComponents(comps, toDate: date, options: [])
+    return (Calendar.current as NSCalendar).date(byAdding: comps, to: date, options: [])
 }
 
 /// Subtracts given component from the date and returns resulting date.
 @available(iOS 8.0, *)
-public func -(date : NSDate, dateComponent: TSDateComponents) -> NSDate? {
+public func -(date : Date, dateComponent: TSDateComponents) -> Date? {
     return date - [dateComponent]
 }
 
 /// Adds given component to the date and returns resulting date.
 @available(iOS 8.0, *)
-public func +(date : NSDate, dateComponent: TSDateComponents) -> NSDate? {
+public func +(date : Date, dateComponent: TSDateComponents) -> Date? {
     return date + [dateComponent]
-}
-
-/// Checks whether the first date is greater than the second date by comparing all date components
-@available(iOS 8.0, *)
-public func >(date1 : NSDate, date2 : NSDate) -> Bool {
-    return date1.compare(date2) == .OrderedDescending
 }
 
 /// Checks whether the first date is greater than or equal to the second date by comparing all date components
 @available(iOS 8.0, *)
-public func >=(date1 : NSDate, date2 : NSDate) -> Bool {
+public func >=(date1 : Date, date2 : Date) -> Bool {
     let res = date1.compare(date2)
-    return res == .OrderedDescending || res == .OrderedSame
-}
-
-/// Checks whether the first date is less than the second date by comparing all date components
-@available(iOS 8.0, *)
-public func <(date1 : NSDate, date2 : NSDate) -> Bool {
-    return date1.compare(date2) == .OrderedAscending
+    return res == .orderedDescending || res == .orderedSame
 }
 
 /// Checks whether the first date is less than or equal to the second date by comparing all date components
 @available(iOS 8.0, *)
-public func <=(date1 : NSDate, date2 : NSDate) -> Bool {
+public func <=(date1 : Date, date2 : Date) -> Bool {
     let res = date1.compare(date2)
-    return res == .OrderedAscending || res == .OrderedSame
+    return res == .orderedAscending || res == .orderedSame
 }
 
 /// Checks whether the first date is equal to the second date by comparing all date components
 @available(iOS 8.0, *)
-public func ==(date1 : NSDate, date2 : NSDate) -> Bool {
-    return date1.compare(date2) == .OrderedSame
+public func ==(date1 : Date, date2 : Date) -> Bool {
+    return date1.compare(date2) == .orderedSame
 }
 
 /// Checks whether the first date is not equal to the second date by comparing all date components
 @available(iOS 8.0, *)
-public func !=(date1 : NSDate, date2 : NSDate) -> Bool {
-    return date1.compare(date2) != .OrderedSame
+public func !=(date1 : Date, date2 : Date) -> Bool {
+    return date1.compare(date2) != .orderedSame
 }
 
 /// Finds minimum of two dates by comparing all date components
-public func min(x : NSDate, y: NSDate) -> NSDate {
+public func min(_ x : Date, y: Date) -> Date {
     return (x < y ? x : y)
 }
 
 /// Finds maximum of two dates by comparing all date components
-public func max(x : NSDate, y: NSDate) -> NSDate {
+public func max(_ x : Date, y: Date) -> Date {
     return (x > y ? x : y)
 }
 /// Finds minimum of two dates by comparing only date components (e.g. Year, Month, Day)
-public func minDate(x : NSDate, y: NSDate) -> NSDate {
+public func minDate(_ x : Date, y: Date) -> Date {
     return (x <! y ? x : y)
 }
 
 /// Finds maximum of two dates by comparing only date components (e.g. Year, Month, Day)
-public func maxDate(x : NSDate, y: NSDate) -> NSDate {
+public func maxDate(_ x : Date, y: Date) -> Date {
     return (x >! y ? x : y)
 }
 
@@ -207,46 +195,46 @@ infix operator <=! {associativity left precedence 130}
 infix operator ==! {associativity left precedence 130}
 infix operator !=! {associativity left precedence 130}
 
-private func compareDates(date1 : NSDate, date2 : NSDate, granularity : NSCalendarUnit) -> NSComparisonResult {
-    return NSCalendar.currentCalendar().compareDate(date1, toDate: date2, toUnitGranularity: granularity)
+private func compareDates(_ date1 : Date, date2 : Date, granularity : NSCalendar.Unit) -> ComparisonResult {
+    return (Calendar.current as NSCalendar).compare(date1, to: date2, toUnitGranularity: granularity)
 }
 
 /// Checks whether the first date is greater than the second date by comparing only their date components (e.g. Year, Month, Day)
 @available(iOS 8.0, *)
-public func >!(date1 : NSDate, date2 : NSDate) -> Bool {
-    return compareDates(date1, date2: date2, granularity: .Day) == .OrderedDescending
+public func >!(date1 : Date, date2 : Date) -> Bool {
+    return compareDates(date1, date2: date2, granularity: .day) == .orderedDescending
 }
 
 /// Checks whether the first date is greater than or equal to the second date by comparing only their date components (e.g. Year, Month, Day)
 @available(iOS 8.0, *)
-public func >=!(date1 : NSDate, date2 : NSDate) -> Bool {
-    let res = compareDates(date1, date2: date2, granularity: .Day)
-    return res == .OrderedDescending || res == .OrderedSame
+public func >=!(date1 : Date, date2 : Date) -> Bool {
+    let res = compareDates(date1, date2: date2, granularity: .day)
+    return res == .orderedDescending || res == .orderedSame
 }
 
 /// Checks whether the first date is less than the second date by comparing only their date components (e.g. Year, Month, Day)
 @available(iOS 8.0, *)
-public func <!(date1 : NSDate, date2 : NSDate) -> Bool {
-    return compareDates(date1, date2: date2, granularity: .Day) == .OrderedAscending
+public func <!(date1 : Date, date2 : Date) -> Bool {
+    return compareDates(date1, date2: date2, granularity: .day) == .orderedAscending
 }
 
 /// Checks whether the first date is less than or equal to the second date by comparing only their date components (e.g. Year, Month, Day)
 @available(iOS 8.0, *)
-public func <=!(date1 : NSDate, date2 : NSDate) -> Bool {
-    let res = compareDates(date1, date2: date2, granularity: .Day)
-    return res == .OrderedAscending || res == .OrderedSame
+public func <=!(date1 : Date, date2 : Date) -> Bool {
+    let res = compareDates(date1, date2: date2, granularity: .day)
+    return res == .orderedAscending || res == .orderedSame
 }
 
 /// Checks whether the first date is equal to the second date by comparing only their date components (e.g. Year, Month, Day)
 @available(iOS 8.0, *)
-public func ==!(date1 : NSDate, date2 : NSDate) -> Bool {
-    return compareDates(date1, date2: date2, granularity: .Day) == .OrderedSame
+public func ==!(date1 : Date, date2 : Date) -> Bool {
+    return compareDates(date1, date2: date2, granularity: .day) == .orderedSame
 }
 
 /// Checks whether the first date is not equal to the second date by comparing only their date components (e.g. Year, Month, Day)
 @available(iOS 8.0, *)
-public func !=!(date1 : NSDate, date2 : NSDate) -> Bool {
-    return compareDates(date1, date2: date2, granularity: .Day) != .OrderedSame
+public func !=!(date1 : Date, date2 : Date) -> Bool {
+    return compareDates(date1, date2: date2, granularity: .day) != .orderedSame
 }
 
 

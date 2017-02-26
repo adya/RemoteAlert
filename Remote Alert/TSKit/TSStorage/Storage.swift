@@ -16,7 +16,7 @@ public protocol TSStorage : class {
     /** Convinient way to access stored values. 
      *  @param key Key associated with an object.
      */
-    subscript(key : String) -> AnyObject? {get set}
+    subscript(key : String) -> Any? {get set}
     
     /** Number of stored objects.
      *  @return Returns number of stored objects.
@@ -27,24 +27,24 @@ public protocol TSStorage : class {
      *  @param object Object to be saved.
      *  @param key Key associated with an object.
      */
-    func saveObject(object: AnyObject, forKey key: String)
+    func saveObject(_ object: Any, forKey key: String)
    
     /** Loads object associated with given key.
      *  @param key Key associated with an object.
      *  @return Returns object if any or nil.
      */
-    func loadObjectForKey(key: String) -> AnyObject?
+    func loadObjectForKey(_ key: String) -> Any?
     
     /** Loads object associated with given key and if exists - removes it from storage.
      *  @param key Key associated with an object.
      *  @return Returns object if any or nil.
      */
-    func popObjectForKey(key: String) -> AnyObject?
+    func popObjectForKey(_ key: String) -> Any?
     
     /** Removes object associated with specified key.
      *  @param key Key associated with an object.
      */
-    func removeObjectForKey(key: String)
+    func removeObjectForKey(_ key: String)
     
     /** Removes all objects from the storage. */
     func removeAllObjects()
@@ -53,13 +53,11 @@ public protocol TSStorage : class {
      *  @param key Key associated with an object.
      *  @return Returns YES if object exists.
      */
-    func hasObjectForKey(key: String) -> Bool
-    
-    var dictionary : [String : AnyObject] {get}
+    func hasObjectForKey(_ key: String) -> Bool
 }
 
 public extension TSStorage {
-    public subscript(key : String) -> AnyObject? {
+    public subscript(key : String) -> Any? {
         get {
             return loadObjectForKey(key)
         }
@@ -80,54 +78,7 @@ struct Storage {
 }
 
 private class TSStorageProvider {
-    static private var tempStorage : TSStorage = BaseStorage(storage:DictionaryStorageProvider())
-    static private var localStorage : TSStorage = BaseStorage(storage: UserDefaultsStorageProvider())
-    static private var remoteStorage : TSStorage = BaseStorage(storage: UbiquitousStorageProvider())
-}
-
-private class BaseStorage : TSStorage {
-    private let storage : StorageProvider
-
-    var count : Int {
-        get {
-            return storage.count
-        }
-    }
-    
-    var dictionary: [String : AnyObject] {
-        return storage.dictionary
-    }
-    
-    init(storage: StorageProvider){
-        self.storage = storage
-    }
-    
-    func saveObject(object: AnyObject, forKey key: String) {
-        storage[key] = object
-    }
-    
-    func loadObjectForKey(key: String) -> AnyObject? {
-        return storage[key]
-    }
-    
-    func popObjectForKey(key: String) -> AnyObject? {
-        if let obj = self.loadObjectForKey(key) {
-            self.removeObjectForKey(key)
-            return obj
-        }
-        return nil
-    }
-    
-    func removeObjectForKey(key: String) {
-        storage[key] = nil
-    }
-    
-    func removeAllObjects() {
-        storage.removeAll()
-    }
-    
-    func hasObjectForKey(key: String) -> Bool {
-        return (self.loadObjectForKey(key) != nil)
-    }
-    
+    static fileprivate var tempStorage : TSStorage = BaseStorage(storage:DictionaryStorageProvider())
+    static fileprivate var localStorage : TSStorage = BaseStorage(storage: UserDefaultsStorageProvider())
+    static fileprivate var remoteStorage : TSStorage = BaseStorage(storage: UbiquitousStorageProvider())
 }

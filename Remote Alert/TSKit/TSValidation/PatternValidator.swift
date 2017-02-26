@@ -1,15 +1,15 @@
 /// - Requires: TSRegex.swift
 
-struct PatternValidator : Validator {
+open class PatternValidator : Validator {
     let pattern : String
-    let failedMessage : String
+    open let failedMessage : String
     
-    init(pattern : String) {
+    public init(pattern : String) {
         self.pattern = pattern
         self.failedMessage = "Does not match '\(self.pattern)' pattern"
     }
     
-    func validate(value: Any?) -> Bool {
+    open func validate(_ value: Any?) -> Bool {
         guard let stringValue = value as? Textual else {
             self.logUnsupportedType(value)
             return true

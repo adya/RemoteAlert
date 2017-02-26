@@ -2,30 +2,30 @@ import UIKit
 
 protocol AlertEditor {
     var delegate : AlertEditorDelegate? {get set}
-    func setAlert(alert : Alert)
+    func setAlert(_ alert : Alert)
     func reset()
 }
 
 protocol AlertEditorDelegate {
-    func alertEditor(editor : AlertEditor, didEdit alert : AlertViewModel)
-    func alertEditor(editor : AlertEditor, didAdd alert : AlertViewModel)
-    func alertEditorDidCancel(editor : AlertEditor)
+    func alertEditor(_ editor : AlertEditor, didEdit alert : AlertViewModel)
+    func alertEditor(_ editor : AlertEditor, didAdd alert : AlertViewModel)
+    func alertEditorDidCancel(_ editor : AlertEditor)
 }
 
 class AddAlertViewController: StandaloneViewController, AlertEditor, UITextFieldDelegate {
 
-    @IBOutlet weak private var tfUrl: UITextField!
-    @IBOutlet weak private var tfInterval: UITextField!
-    @IBOutlet weak private var sInterval: UIStepper!
-    @IBOutlet weak private var bSave: UIButton!
+    @IBOutlet weak fileprivate var tfUrl: UITextField!
+    @IBOutlet weak fileprivate var tfInterval: UITextField!
+    @IBOutlet weak fileprivate var sInterval: UIStepper!
+    @IBOutlet weak fileprivate var bSave: UIButton!
     
-    private let manager : AlertManager
-    private var mode : Mode = .Add
+    fileprivate let manager : AlertManager
+    fileprivate var mode : Mode = .add
     
     var delegate : AlertEditorDelegate?
     var viewModel : AlertViewModel! {
         didSet {
-            if isViewLoaded() {
+            if isViewLoaded {
                 configure()
             }
         }
@@ -51,29 +51,29 @@ class AddAlertViewController: StandaloneViewController, AlertEditor, UITextField
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if viewModel != nil {
             configure()
         }
         resetErrors()
-        bSave.setTitle(mode == .Add ? "Add" : "Save", forState: .Normal)
+        bSave.setTitle(mode == .add ? "Add" : "Save", for: UIControlState())
     }
     
-    func setAlert(alert: Alert) {
+    func setAlert(_ alert: Alert) {
         viewModel = EditableAlertViewModel(alert: alert)
-        mode = .Edit
-        if isViewLoaded() {
+        mode = .edit
+        if isViewLoaded {
             resetErrors()
         }
     }
     
     func reset() {
         viewModel = NewAlertViewModel()
-        if isViewLoaded() {
+        if isViewLoaded {
             resetErrors()
         }
-        mode = .Add
+        mode = .add
     }
     
     func configure() {
@@ -83,10 +83,10 @@ class AddAlertViewController: StandaloneViewController, AlertEditor, UITextField
         sInterval.value = value
         sInterval.maximumValue = value + 1
     }
-    @IBAction func intervalChangedAction(sender: UIStepper) {
+    @IBAction func intervalChangedAction(_ sender: UIStepper) {
         viewModel.intervalProperty.value = Int(sender.value)
     }
-    @IBAction func inputEditedAction(sender: UITextField) {
+    @IBAction func inputEditedAction(_ sender: UITextField) {
         switch sender {
         case tfInterval: viewModel.intervalProperty.value = sender.text.flatMap {Int($0)}
         case tfUrl: viewModel.urlProperty.value = sender.text
@@ -94,27 +94,27 @@ class AddAlertViewController: StandaloneViewController, AlertEditor, UITextField
         }
         setView(sender, valid: true)
     }
-    @IBAction func viewTapped(sender: UITapGestureRecognizer) {
+    @IBAction func viewTapped(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
-    @IBAction func saveAction(sender: UIButton) {
+    @IBAction func saveAction(_ sender: UIButton) {
         guard viewModel.isValid else {
             highlightErrors()
             return
         }
-        if mode == .Edit {
+        if mode == .edit {
             delegate?.alertEditor(self, didEdit: viewModel)
         } else {
             delegate?.alertEditor(self, didAdd: viewModel)
         }
     }
-    @IBAction func cancelAction(sender: AnyObject) {
+    @IBAction func cancelAction(_ sender: AnyObject) {
         delegate?.alertEditorDidCancel(self)
     }
     
@@ -132,13 +132,13 @@ class AddAlertViewController: StandaloneViewController, AlertEditor, UITextField
         }
     }
     
-    func setView(view : UIView, valid : Bool) {
-        view.borderColor = valid ? UIColor.lightGrayColor() : UIColor.redColor()
+    func setView(_ view : UIView, valid : Bool) {
+        view.borderColor = valid ? UIColor.lightGray : UIColor.red
     }
 
 }
 
 private enum Mode {
-    case Add
-    case Edit
+    case add
+    case edit
 }

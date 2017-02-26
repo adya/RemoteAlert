@@ -2,19 +2,19 @@ import UIKit
 
 class AlertCell: UITableViewCell, TSTableViewElement {
 
-    @IBOutlet weak private var lUrl: UILabel!
-    @IBOutlet weak private var lInterval: UILabel!
-    @IBOutlet weak private var sState: UISwitch!
-    @IBOutlet weak private var pvRemaining: UIProgressView!
-    @IBOutlet weak private var lStatus: UILabel!
+    @IBOutlet weak fileprivate var lUrl: UILabel!
+    @IBOutlet weak fileprivate var lInterval: UILabel!
+    @IBOutlet weak fileprivate var sState: UISwitch!
+    @IBOutlet weak fileprivate var pvRemaining: UIProgressView!
+    @IBOutlet weak fileprivate var lStatus: UILabel!
     
-    private var holder : AlertCellDataSource?
+    fileprivate var holder : AlertCellDataSource?
     
     func configure(with dataSource: AlertCellDataSource) {
         holder = DataSourceHolder(dataSource: dataSource)
         lUrl.text = dataSource.url ?? "Unknown"
         lStatus.text = dataSource.status ?? "Unknown"
-        lStatus.textColor = dataSource.statusColor ?? UIColor.darkTextColor()
+        lStatus.textColor = dataSource.statusColor ?? UIColor.darkText
         let interval = dataSource.interval ?? 0
         let remaining = dataSource.remaining ?? 0
         if interval <= 0 {
@@ -24,8 +24,8 @@ class AlertCell: UITableViewCell, TSTableViewElement {
         }
         
         backgroundView = UIView(frame: contentView.frame)
-        sState.on = dataSource.enabled
-        pvRemaining.hidden = !dataSource.active || interval == 0 || !dataSource.enabled
+        sState.isOn = dataSource.enabled
+        pvRemaining.isHidden = !dataSource.active || interval == 0 || !dataSource.enabled
         if interval != 0 {
             pvRemaining.setProgress(Float(remaining) / Float(interval), animated: false)
         }
@@ -34,44 +34,44 @@ class AlertCell: UITableViewCell, TSTableViewElement {
 
     var triggerClosure : AlertCellTriggerClosure?
     
-    @IBAction private func triggerAction(sender: UISwitch) {
-        triggerClosure?(cell: self, state: sender.on)
+    @IBAction fileprivate func triggerAction(_ sender: UISwitch) {
+        triggerClosure?(self, sender.isOn)
         updateState()
     }
     
-    private func updateState() {
-        if sState.on {
-            backgroundView?.backgroundColor = UIColor.whiteColor()
+    fileprivate func updateState() {
+        if sState.isOn {
+            backgroundView?.backgroundColor = UIColor.white
         } else {
-            backgroundView?.backgroundColor = UIColor.lightGrayColor()
+            backgroundView?.backgroundColor = UIColor.lightGray
         }
     }
     
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
-        UIView.animateWithDuration(animated ? 0.7 : 0, animations: {
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        UIView.animate(withDuration: animated ? 0.7 : 0, animations: {
             self.select(highlighted)
         })
         super.setHighlighted(highlighted, animated: animated)
     }
     
-    private func select(selected : Bool){
+    fileprivate func select(_ selected : Bool){
         if selected {
-            lUrl?.textColor = UIColor.whiteColor()
-            lInterval?.textColor = UIColor.whiteColor()
-            lStatus?.textColor = UIColor.whiteColor()
+            lUrl?.textColor = UIColor.white
+            lInterval?.textColor = UIColor.white
+            lStatus?.textColor = UIColor.white
             self.contentView.backgroundColor = UIColor.mainColor()
         }
         else {
-            self.lUrl?.textColor = UIColor.darkTextColor()
-            self.lInterval?.textColor = UIColor.darkTextColor()
-            lStatus?.textColor =  holder?.statusColor ?? UIColor.darkTextColor()
+            self.lUrl?.textColor = UIColor.darkText
+            self.lInterval?.textColor = UIColor.darkText
+            lStatus?.textColor =  holder?.statusColor ?? UIColor.darkText
             self.contentView.backgroundColor = nil
         }
     }
 
 }
 
-typealias AlertCellTriggerClosure = (cell : AlertCell, state : Bool) -> Void
+typealias AlertCellTriggerClosure = (_ cell : AlertCell, _ state : Bool) -> Void
 
 private struct DataSourceHolder : AlertCellDataSource {
     var interval: Int?

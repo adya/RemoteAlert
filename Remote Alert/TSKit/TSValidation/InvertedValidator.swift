@@ -1,18 +1,14 @@
-struct InvertedValidator : ProxyValidator {
-    let proxyValidator: Validator
-    var failedMessage: String {
-        return "Inverted: \(self.proxyValidator.failedMessage)"
+open class InvertedValidator : ProxyValidator {
+    public init(validator : Validator) {
+        super.init(proxy: validator,
+                   message: "Inverted: \(validator.failedMessage)")
     }
     
-    init(validator : Validator) {
-        self.proxyValidator = validator
-    }
-    
-    func validate(value: Any?) -> Bool {
-        return !self.proxyValidator.validate(value)
+    open override func validate(_ value: Any?) -> Bool {
+        return !super.validate(value)
     }
 }
 
-prefix func !(validator : Validator) -> Validator {
+public prefix func !(validator : Validator) -> Validator {
     return InvertedValidator(validator : validator)
 }

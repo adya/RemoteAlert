@@ -3,21 +3,21 @@ import AVFoundation
 
 class SilentChecker {
     
-    private var startTime : NSDate?
-    private var completion : ((Bool) -> Void)?
-    private var soundId : SystemSoundID = 0
+    fileprivate var startTime : Date?
+    fileprivate var completion : ((Bool) -> Void)?
+    fileprivate var soundId : SystemSoundID = 0
     
     var debugDelegate : DebugDelegate?
     
     init() {
-        if let url = NSBundle.mainBundle().URLForResource("silence", withExtension: "mp3") {
+        if let url = Bundle.main.url(forResource: "silence", withExtension: "mp3") {
             var soundId : SystemSoundID = 0
-            let userData = unsafeBitCast(self, UnsafeMutablePointer<Void>.self)
-            AudioServicesCreateSystemSoundID(url, &soundId)
+            let userData = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
+            AudioServicesCreateSystemSoundID(url as CFURL, &soundId)
             if soundId > 0 {
                 self.soundId = soundId
-                AudioServicesAddSystemSoundCompletion(soundId, CFRunLoopGetMain(), kCFRunLoopDefaultMode, { soundId, data in
-                  let me = unsafeBitCast(data, SilentChecker.self)
+                AudioServicesAddSystemSoundCompletion(soundId, CFRunLoopGetMain(), CFRunLoopMode.defaultMode.rawValue, { soundId, data in
+                  let me = unsafeBitCast(data, to: SilentChecker.self)
                     me.completed()
                 }, userData)
             }
@@ -27,17 +27,17 @@ class SilentChecker {
         }
     }
     
-    func check(completion : (Bool) -> Void) {
+    func check(_ completion : @escaping (Bool) -> Void) {
         self.completion = completion
         let switched = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
-        debugDelegate?.debug(self, hasDebugInfo: "Audio \(switched != nil ? "has been switched" : "has not been switched") to ambient", withTimestamp: NSDate())
+        debugDelegate?.debug(self, hasDebugInfo: "Audio \(switched != nil ? "has been switched" : "has not been switched") to ambient", withTimestamp: Date())
         if let startTime = startTime {
-            let now = NSDate()
-            if now.timeIntervalSinceDate(startTime) > 1 {
+            let now = Date()
+            if now.timeIntervalSince(startTime) > 1 {
                 playSilentSound()
 			}else{
-				let switchedBack = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: AVAudioSessionCategoryOptions.MixWithOthers)
-                debugDelegate?.debug(self, hasDebugInfo: "Audio \(switchedBack != nil ? "has been switched" : "has not been switched") to playback", withTimestamp: NSDate())
+				let switchedBack = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: AVAudioSessionCategoryOptions.mixWithOthers)
+                debugDelegate?.debug(self, hasDebugInfo: "Audio \(switchedBack != nil ? "has been switched" : "has not been switched") to playback", withTimestamp: Date())
 				completion(false)
 			}
         } else {
@@ -45,20 +45,20 @@ class SilentChecker {
         }
     }
     
-    private func playSilentSound() {
-        debugDelegate?.debug(self, hasDebugInfo: "Checking silence mode...", withTimestamp: NSDate())
-        startTime = NSDate()
+    fileprivate func playSilentSound() {
+        debugDelegate?.debug(self, hasDebugInfo: "Checking silence mode...", withTimestamp: Date())
+        startTime = Date()
         AudioServicesPlayAlertSound(soundId)
     }
     
-    private func completed() {
-        let now = NSDate()
-        let interval = startTime.flatMap{now.timeIntervalSinceDate($0)} ?? 0
-        let threshold = 0.5
+    fileprivate func completed() {
+        let now = Date()
+        let interval = startTime.flatMap{now.timeIntervalSince($0)} ?? 0
+        let threshold = 0.8 // against 1.16 seconds of whole audio file.
         let muted = interval <= threshold
-        debugDelegate?.debug(self, hasDebugInfo: "Check done in \(interval) seconds (threshold is \(threshold)) - device \(muted ? "silenced" : "ringing")", withTimestamp: NSDate())
-        let switched = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, withOptions: AVAudioSessionCategoryOptions.MixWithOthers)
-        debugDelegate?.debug(self, hasDebugInfo: "Audio \(switched != nil ? "has been switched" : "has not been switched") to playback", withTimestamp: NSDate())
+        debugDelegate?.debug(self, hasDebugInfo: "Check done in \(interval) seconds (threshold is \(threshold)) - device \(muted ? "silenced" : "ringing")", withTimestamp: Date())
+        let switched = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: AVAudioSessionCategoryOptions.mixWithOthers)
+        debugDelegate?.debug(self, hasDebugInfo: "Audio \(switched != nil ? "has been switched" : "has not been switched") to playback", withTimestamp: Date())
         completion?(muted)
     }
     

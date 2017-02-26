@@ -5,8 +5,8 @@ class TSTextField : UITextField {
     
     @IBInspectable var inset : CGFloat = 0
     
-    override func textRectForBounds(bounds : CGRect) -> CGRect {
-        let defaultBounds = super.textRectForBounds(bounds)
+    override func textRect(forBounds bounds : CGRect) -> CGRect {
+        let defaultBounds = super.textRect(forBounds: bounds)
         let inseted = CGRect(x: defaultBounds.minX + self.inset,
                       y: defaultBounds.minY,
                       width: defaultBounds.width - 2 * self.inset,
@@ -14,8 +14,8 @@ class TSTextField : UITextField {
         return inseted
     }
     
-    override func editingRectForBounds(bounds: CGRect) -> CGRect {
-        let defaultBounds = super.editingRectForBounds(bounds)
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        let defaultBounds = super.editingRect(forBounds: bounds)
         let inseted = CGRect(x: defaultBounds.minX + self.inset,
                       y: defaultBounds.minY,
                       width: defaultBounds.width - 2 * self.inset,

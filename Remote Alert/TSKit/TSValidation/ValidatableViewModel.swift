@@ -14,7 +14,7 @@
     }
  ```
  */
-protocol ValidatableViewModel : Validatable {
+public protocol ValidatableViewModel : Validatable {
     
     /// Returns true if all `validatables` have passed validation.
     var isValid : Bool {get}
@@ -24,28 +24,24 @@ protocol ValidatableViewModel : Validatable {
 }
 
 /// Defines default ViewModel validation algorithm via `validatables` property.
-extension ValidatableViewModel {
-    var isValid: Bool {
+public extension ValidatableViewModel {
+    public var isValid: Bool {
         let failedValidatables = self.validatables.filter{ !$0.isValid }
         if !failedValidatables.isEmpty {
             let errors = failedValidatables.flatMap {$0.validationErrors}
-            let prettyErrors = errors.joinWithSeparator(",\n")
-            print("\(self.dynamicType): Failed with errors: \(prettyErrors).")
+            let prettyErrors = errors.joined(separator: ",\n")
+            print("\(type(of: self)): Failed with errors: \(prettyErrors).")
         }
         return failedValidatables.isEmpty
     }
     
-    var validatables : [Validatable] {
-        return []
-    }
-    
-    var validationErrors: [String] {
+    public var validationErrors: [String] {
         return self.validatables.filter{!$0.isValid}.flatMap{$0.validationErrors}
     }
 }
 
 /// Represents validatable entity.
-protocol Validatable {
+public protocol Validatable {
     var isValid : Bool {get}
     var validationErrors : [String] {get}
 }

@@ -17,6 +17,6 @@ protocol TSIdentifiable {
 
 extension TSIdentifiable {
     static var identifier : String {
-        return String(self)
+        return String(describing: self)
     }
 }

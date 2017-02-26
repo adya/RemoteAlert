@@ -38,40 +38,40 @@ extension TSCollectionViewElement {
 
 extension UITableView {
     
-    func dequeueReusableCellOfType<T where T : UITableViewCell, T : TSTableViewElement> (type : T.Type) -> T {
+    func dequeueReusableCellOfType<T> (_ type : T.Type) -> T where T : UITableViewCell, T : TSTableViewElement {
         let id = type.identifier
-        if let cell = self.dequeueReusableCellWithIdentifier(id) {
+        if let cell = self.dequeueReusableCell(withIdentifier: id) {
             return cell as! T
         }
         else {
-            let nib = UINib(nibName: id, bundle: NSBundle.mainBundle())
-            self.registerNib(nib, forCellReuseIdentifier: id)
+            let nib = UINib(nibName: id, bundle: Bundle.main)
+            self.register(nib, forCellReuseIdentifier: id)
             return self.dequeueReusableCellOfType(type)
         }
     }
     
     @available(iOS 6.0, *)
-    func dequeueReusableCellOfType<T where T : UITableViewCell, T : TSTableViewElement> (type : T.Type, forIndexPath indexPath : NSIndexPath) -> T {
+    func dequeueReusableCellOfType<T> (_ type : T.Type, forIndexPath indexPath : IndexPath) -> T where T : UITableViewCell, T : TSTableViewElement {
         let id = type.identifier
         
-        let cell = self.dequeueReusableCellWithIdentifier(id, forIndexPath: indexPath)
+        let cell = self.dequeueReusableCell(withIdentifier: id, for: indexPath)
         if let tsCell = cell as? T {
             return tsCell
         } else {
-            let nib = UINib(nibName: id, bundle: NSBundle.mainBundle())
-            self.registerNib(nib, forCellReuseIdentifier: id)
+            let nib = UINib(nibName: id, bundle: Bundle.main)
+            self.register(nib, forCellReuseIdentifier: id)
             return self.dequeueReusableCellOfType(type, forIndexPath: indexPath)
         }
     }
     
-    func dequeueReusableViewOfType<T where T : UITableViewHeaderFooterView, T : TSTableViewElement> (type : T.Type) -> T {
+    func dequeueReusableViewOfType<T> (_ type : T.Type) -> T where T : UITableViewHeaderFooterView, T : TSTableViewElement {
         let id = type.identifier
-        if let view = self.dequeueReusableHeaderFooterViewWithIdentifier(id) {
+        if let view = self.dequeueReusableHeaderFooterView(withIdentifier: id) {
             return view as! T
         }
         else {
-            let nib = UINib(nibName: id, bundle: NSBundle.mainBundle())
-            self.registerNib(nib, forHeaderFooterViewReuseIdentifier: id)
+            let nib = UINib(nibName: id, bundle: Bundle.main)
+            self.register(nib, forHeaderFooterViewReuseIdentifier: id)
             return self.dequeueReusableViewOfType(type)
         }
     }
@@ -79,33 +79,33 @@ extension UITableView {
 
 @available(iOS 6.0, *)
 extension UICollectionView {
-    func dequeueReusableCellOfType<T where T : UICollectionViewCell, T : TSCollectionViewElement> (type : T.Type, forIndexPath indexPath : NSIndexPath) -> T {
+    func dequeueReusableCellOfType<T> (_ type : T.Type, forIndexPath indexPath : IndexPath) -> T where T : UICollectionViewCell, T : TSCollectionViewElement {
         let id = type.identifier
-        let cell = self.dequeueReusableCellWithReuseIdentifier(id, forIndexPath: indexPath)
+        let cell = self.dequeueReusableCell(withReuseIdentifier: id, for: indexPath)
         if let tsCell = cell as? T {
             return tsCell
         } else {
-            let nib = UINib(nibName: id, bundle: NSBundle.mainBundle())
-            self.registerNib(nib, forCellWithReuseIdentifier: id)
+            let nib = UINib(nibName: id, bundle: Bundle.main)
+            self.register(nib, forCellWithReuseIdentifier: id)
             return self.dequeueReusableCellOfType(type, forIndexPath: indexPath)
         }
     }
     
     @available(iOS 8.0, *)
-    func dequeueReusableHeaderViewOfType<T where T : UICollectionReusableView, T : TSCollectionViewElement> (type : T.Type, forIndexPath indexPath : NSIndexPath) -> T {
+    func dequeueReusableHeaderViewOfType<T> (_ type : T.Type, forIndexPath indexPath : IndexPath) -> T where T : UICollectionReusableView, T : TSCollectionViewElement {
         return self.dequeueReusableSupplementaryViewOfType(type, kind: UICollectionElementKindSectionHeader, forIndexPath: indexPath)
     }
     
     @available(iOS 8.0, *)
-    func dequeueReusableFooterViewOfType<T where T : UICollectionReusableView, T : TSCollectionViewElement> (type : T.Type, forIndexPath indexPath : NSIndexPath) -> T {
+    func dequeueReusableFooterViewOfType<T> (_ type : T.Type, forIndexPath indexPath : IndexPath) -> T where T : UICollectionReusableView, T : TSCollectionViewElement {
         return self.dequeueReusableSupplementaryViewOfType(type, kind: UICollectionElementKindSectionFooter, forIndexPath: indexPath)
     }
     
     @available(iOS 8.0, *)
-    private func dequeueReusableSupplementaryViewOfType<T where T : UICollectionReusableView, T : TSCollectionViewElement> (type : T.Type, kind: String, forIndexPath indexPath : NSIndexPath) -> T {
+    fileprivate func dequeueReusableSupplementaryViewOfType<T> (_ type : T.Type, kind: String, forIndexPath indexPath : IndexPath) -> T where T : UICollectionReusableView, T : TSCollectionViewElement {
         let id = type.identifier
         
-        let cell = self.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier: id, forIndexPath: indexPath)
+        let cell = self.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath)
         return cell as! T
         //        }
         //        catch {

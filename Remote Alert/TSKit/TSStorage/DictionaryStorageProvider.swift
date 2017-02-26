@@ -1,7 +1,7 @@
 class DictionaryStorageProvider : StorageProvider {
-    private var dic = [String : AnyObject]()
+    fileprivate var dic = [String : Any]()
     
-    subscript(key : String) -> AnyObject? {
+    subscript(key : String) -> Any? {
         get {
             return dic[key]
         }
@@ -20,7 +20,7 @@ class DictionaryStorageProvider : StorageProvider {
         }
     }
     
-    var dictionary: [String : AnyObject] {
+    var dictionary: [String : Any] {
         return dic
     }
 }

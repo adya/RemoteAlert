@@ -3,81 +3,81 @@ import AVFoundation
 import MediaPlayer
 
 protocol AlertNotifier {
-    func notifyAlertsTriggered(alert : [Alert])
+    func notifyAlertsTriggered(_ alert : [Alert])
     var background : Bool {get set}
     var debugDelegate : DebugDelegate? {get set}
 }
 
 class AudioAlertNotifier : AlertNotifier {
     
-    private var player : AVAudioPlayer?
-    private let audio : NSURL?
-    private var audioChecker = AudioChecker()
-    private var isChecking : Bool = false
+    fileprivate var player : AVAudioPlayer?
+    fileprivate let audio : URL?
+    fileprivate var audioChecker = AudioChecker()
+    fileprivate var isChecking : Bool = false
     
     var debugDelegate : DebugDelegate?
     
     var background: Bool = false
     
     init() {
-        guard let path = NSBundle.mainBundle().pathForResource("Alert", ofType: "wav") else {
+        guard let path = Bundle.main.path(forResource: "Alert", ofType: "wav") else {
             print("Failed to load audio file.")
             audio = nil
             return
         }
-        audio = NSURL(fileURLWithPath: path)
+        audio = URL(fileURLWithPath: path)
         player = nil
     }
     
-    private func play() {
+    fileprivate func play() {
         player?.stop()
-        guard let audio = audio, player = try? AVAudioPlayer(contentsOfURL: audio) else {
-            debugDelegate?.debug(self, hasDebugInfo: "Failed to start playing alert", withTimestamp: NSDate())
+        guard let audio = audio, let player = try? AVAudioPlayer(contentsOf: audio) else {
+            debugDelegate?.debug(self, hasDebugInfo: "Failed to start playing alert", withTimestamp: Date())
             return
         }
         self.player = player
         self.player?.numberOfLoops = -1
         self.player?.play()
-        debugDelegate?.debug(self, hasDebugInfo: "Started playing alert sound", withTimestamp: NSDate())
+        debugDelegate?.debug(self, hasDebugInfo: "Started playing alert sound", withTimestamp: Date())
     }
     
-    private func stop() {
+    fileprivate func stop() {
         player?.stop()
         player = nil
-        debugDelegate?.debug(self, hasDebugInfo: "Alert sound finished playing.", withTimestamp: NSDate())
+        debugDelegate?.debug(self, hasDebugInfo: "Alert sound finished playing.", withTimestamp: Date())
     }
     
-    func notifyAlertsTriggered(alerts: [Alert]) {
+    func notifyAlertsTriggered(_ alerts: [Alert]) {
         
         guard !alerts.isEmpty else {
-            debugDelegate?.debug(self, hasDebugInfo: "No alerts to trigger.", withTimestamp: NSDate())
+            debugDelegate?.debug(self, hasDebugInfo: "No alerts to trigger.", withTimestamp: Date())
             return
         }
         
-        guard !(player?.playing ?? false) else {
-            debugDelegate?.debug(self, hasDebugInfo: "There is already playing alert", withTimestamp: NSDate())
+        guard !(player?.isPlaying ?? false) else {
+            debugDelegate?.debug(self, hasDebugInfo: "There is already playing alert", withTimestamp: Date())
             return
         }
         
         guard !isChecking else {
-            debugDelegate?.debug(self, hasDebugInfo: "Silence mode check is already in progress.", withTimestamp: NSDate())
+            debugDelegate?.debug(self, hasDebugInfo: "Silence mode check is already in progress.", withTimestamp: Date())
             return
         }
         
-        debugDelegate?.debug(self, hasDebugInfo: "Starting silent mode check...", withTimestamp: NSDate())
+        debugDelegate?.debug(self, hasDebugInfo: "Starting silent mode check...", withTimestamp: Date())
         isChecking = true
         audioChecker = AudioChecker()
         audioChecker.debugDelegate = debugDelegate
         audioChecker.silentMode() {
             defer {
-                self.debugDelegate?.debug(self, hasDebugInfo: "Silent mode check done.", withTimestamp: NSDate())
+                self.debugDelegate?.debug(self, hasDebugInfo: "Silent mode check done.", withTimestamp: Date())
                 self.isChecking = false
             }
             guard !$0 else {
-                self.debugDelegate?.debug(self, hasDebugInfo: "Device is silenced. Alert sound won't be played.", withTimestamp: NSDate())
+                self.debugDelegate?.debug(self, hasDebugInfo: "Device is silenced. Alert sound won't be played.", withTimestamp: Date())
                 return
             }
-            self.debugDelegate?.debug(self, hasDebugInfo: "Turning on volume. (Current volume is \(self.audioChecker.volume)).", withTimestamp: NSDate())
+            self.debugDelegate?.debug(self, hasDebugInfo: "Turning on volume. (Current volume is \(self.audioChecker.volume)).", withTimestamp: Date())
             self.audioChecker.volume = 1.0
             self.play()
         }
@@ -86,22 +86,22 @@ class AudioAlertNotifier : AlertNotifier {
 
 class UIAlertNotifier : AudioAlertNotifier {
     
-    private let controller : UIViewController
-    private let alertController : UIAlertController
+    fileprivate let controller : UIViewController
+    fileprivate let alertController : UIAlertController
     
     init(presentingViewController : UIViewController) {
         controller = presentingViewController
-        alertController = UIAlertController(title: "Alert", message: nil, preferredStyle: .Alert)
+        alertController = UIAlertController(title: "Alert", message: nil, preferredStyle: .alert)
         super.init()
         
-        alertController.addAction(UIAlertAction(title: "Okay", style: .Cancel, handler: { _ in
-            self.controller.dismissViewControllerAnimated(true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Okay", style: .cancel, handler: { _ in
+            self.controller.dismiss(animated: true, completion: nil)
             AlertManager.sharedManager.resetAll()
             self.stop()
         }))
     }
     
-    override func notifyAlertsTriggered(alerts: [Alert]) {
+    override func notifyAlertsTriggered(_ alerts: [Alert]) {
         super.notifyAlertsTriggered(alerts)
         var message = ""
         if let alert = alerts.first?.url {
@@ -113,14 +113,14 @@ class UIAlertNotifier : AudioAlertNotifier {
         
         alertController.message = message
         if !background && !alerts.isEmpty && controller.presentedViewController == nil {
-            controller.presentViewController(alertController, animated: true, completion: nil)
+            controller.present(alertController, animated: true, completion: nil)
         }
     }
 }
 
 private class AudioChecker : MPVolumeView {
     
-    private let checker = SilentChecker()
+    fileprivate let checker = SilentChecker()
     
     var debugDelegate : DebugDelegate? {
         get {
@@ -131,15 +131,15 @@ private class AudioChecker : MPVolumeView {
         }
     }
     
-    private var volumeSlider : UISlider {
+    fileprivate var volumeSlider : UISlider {
         self.showsRouteButton = false
         self.showsVolumeSlider = false
-        self.hidden = true
+        self.isHidden = true
         var slider = UISlider()
         for subview in self.subviews {
-            if subview.isKindOfClass(UISlider){
+            if subview.isKind(of: UISlider.self){
                 slider = subview as! UISlider
-                slider.continuous = false
+                slider.isContinuous = false
                 (subview as! UISlider).value = AVAudioSession.sharedInstance().outputVolume
                 return slider
             }
@@ -156,7 +156,7 @@ private class AudioChecker : MPVolumeView {
         }
     }
     
-    func silentMode(completion : (Bool) -> Void) {
+    func silentMode(_ completion : @escaping (Bool) -> Void) {
         checker.check() { muted in
             completion(muted)
         }

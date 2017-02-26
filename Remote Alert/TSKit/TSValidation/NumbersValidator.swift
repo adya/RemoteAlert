@@ -1,5 +1,7 @@
 /// Validates number only.
-struct NumbersValidator : ProxyValidator {
-    let proxyValidator : Validator = PatternValidator(pattern: "\\d+")
-    let failedMessage = "Only numbers are allowed"
+open class NumbersValidator : ProxyValidator {
+    public init() {
+        super.init(proxy: PatternValidator(pattern: "\\d+"),
+                   message: "Only numbers are allowed")
+    }
 }
