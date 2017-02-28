@@ -54,6 +54,8 @@ public protocol TSStorage : class {
      *  @return Returns YES if object exists.
      */
     func hasObjectForKey(_ key: String) -> Bool
+    
+    var dictionary : [String : Any] {get}
 }
 
 public extension TSStorage {
@@ -77,7 +79,7 @@ struct Storage {
     static let remote : TSStorage = TSStorageProvider.remoteStorage
 }
 
-private class TSStorageProvider {
+fileprivate class TSStorageProvider {
     static fileprivate var tempStorage : TSStorage = BaseStorage(storage:DictionaryStorageProvider())
     static fileprivate var localStorage : TSStorage = BaseStorage(storage: UserDefaultsStorageProvider())
     static fileprivate var remoteStorage : TSStorage = BaseStorage(storage: UbiquitousStorageProvider())

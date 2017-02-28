@@ -53,7 +53,7 @@ struct NewAlertViewModel : AlertViewModel {
             case .scheduled, .fired, .skipped : active = true
             default: active = false
             }
-            status = "\(state)"
+            status = "\(state)".capitalized
             if case .triggered = state {
                 statusColor = UIColor.mainColor()
             } else {
@@ -106,7 +106,7 @@ struct EditableAlertViewModel : AlertViewModel {
         default: active = false
         }
         
-        status = "\(alert.state)"
+        status = "\(alert.state)".capitalized
         if case .triggered = alert.state {
             statusColor = UIColor.mainColor()
         } else {

@@ -9,15 +9,13 @@ public protocol Validator {
     
     /// Message describing validator's requirements.
     var failedMessage : String {get}
-    
-    /// Complementary method to be called by conforming types when received unsupported value types.
-    func logUnsupportedType(_ value : Any?)
 }
 
 // MARK: - Defaults
 
-public extension Validator {
-    public func logUnsupportedType(_ value : Any?) {
+extension Validator {
+    /// Complementary method to be called by conforming types when received unsupported value types.
+    func logUnsupportedType(_ value : Any?) {
         print("\(type(of: self)): Received value with unsupported type \(type(of: value)).")
     }
     

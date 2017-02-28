@@ -36,19 +36,22 @@ class SilentChecker {
             if now.timeIntervalSince(startTime) > 1 {
                 playSilentSound()
 			}else{
-				let switchedBack = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: AVAudioSessionCategoryOptions.mixWithOthers)
+                let switchedBack = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: AVAudioSessionCategoryOptions.mixWithOthers)
                 debugDelegate?.debug(self, hasDebugInfo: "Audio \(switchedBack != nil ? "has been switched" : "has not been switched") to playback", withTimestamp: Date())
+
 				completion(false)
 			}
         } else {
             playSilentSound()
         }
-    }
-    
+            }
+
     fileprivate func playSilentSound() {
         debugDelegate?.debug(self, hasDebugInfo: "Checking silence mode...", withTimestamp: Date())
         startTime = Date()
         AudioServicesPlayAlertSound(soundId)
+        let switchedBack = try? AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback, with: AVAudioSessionCategoryOptions.mixWithOthers)
+        debugDelegate?.debug(self, hasDebugInfo: "Audio \(switchedBack != nil ? "has been switched" : "has not been switched") to playback", withTimestamp: Date())
     }
     
     fileprivate func completed() {

@@ -142,6 +142,7 @@ class AlertManager {
 // MARK: Updater
 private extension AlertManager {
     @objc func updateTick(_ timer : Timer) {
+        backgroundPlayer.play() // probably ensure that background playback is still alive.
         alerts = alerts.map { tickAlert($0) }
     }
     

@@ -13,7 +13,7 @@ class DictionaryStorageProvider : StorageProvider {
     func removeAll() {
         dic.removeAll()
     }
-    
+
     var count: Int {
         get {
             return dic.count
